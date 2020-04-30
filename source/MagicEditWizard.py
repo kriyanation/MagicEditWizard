@@ -1,6 +1,9 @@
+import os
 import tkinter as tk
 from tkinter import Frame,ttk,messagebox, StringVar
 import LessonList,Data_Flow,Edit_Utils
+import sqlite3
+import Lesson_File_Manager
 
 
 class MagicEditWizard(Frame):
@@ -9,16 +12,20 @@ class MagicEditWizard(Frame):
         super().__init__(*args, **kwargs)
         self.title_frame = Frame(self)
         self.index = 0
+        self.parent = parent
         self.factual_frame = Frame(self)
         self.apply_activity_frame = Frame(self)
         self.apply_activity_steps_frame = Frame(self.apply_activity_frame)
+        self.ip_frame = Frame(self)
         self.rowconfigure(0, weight=1)
         self.configure(background='beige')
         self.columnconfigure(0, weight=1)
         self.title_frame.configure(background='beige')
         self.factual_frame.configure(background='beige')
         self.apply_activity_frame.configure(background='beige')
+        self.ip_frame.configure(background='beige')
         self.apply_activity_steps_frame.configure(background='beige')
+        self.data_collector = {}
         s  = ttk.Style()
         self.bind("<Configure>",self.resize)
         s.theme_use('clam')
@@ -46,12 +53,65 @@ class MagicEditWizard(Frame):
         print(self.lesson_dict)
         self.create_title_edit_page(8)
         bottom_frame = tk.Frame(parent, background="beige")
-        next_button = ttk.Button(bottom_frame, text='Next', command=self.next_page, style='Green.TButton')
-        back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Green.TButton')
-        back_button.grid(row=0,column=0,padx=10)
-        next_button.grid(row=0, column=1)
+        self.next_button = ttk.Button(bottom_frame, text='Next', command=self.next_page, style='Green.TButton')
+        self.back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Green.TButton')
+        self.back_button.grid(row=0,column=0,padx=10)
+        self.next_button.grid(row=0, column=1)
         bottom_frame.grid(sticky=tk.S)
+        self.data_collector['Lesson_Type'] = 'Science'
+        self.data_collector['Lesson_Template'] = 'Hogwarts'
+        self.data_collector['Lesson_Title'] = ''
+        self.data_collector['Title_Image'] = ''
+        self.data_collector['Title_Video'] = ''
+        self.data_collector['Title_Running_Notes'] = ''
 
+        self.data_collector['Factual_Term1'] = ''
+        self.data_collector['Factual_Term1_Description'] = ''
+        self.data_collector['Factual_Term2'] = ''
+        self.data_collector['Factual_Term2_Description'] = ''
+        self.data_collector['Factual_Term3'] = ''
+        self.data_collector['Factual_Term3_Description'] = ''
+        self.data_collector['Factual_Image1'] = ''
+        self.data_collector['Factual_Image2'] = ''
+        self.data_collector['Factual_Image3'] = ''
+        self.data_collector['Application_Mode'] = ''
+        self.data_collector['Application_Steps_Number'] = 0
+        self.data_collector['Application_Step_Description_1'] = ''
+        self.data_collector['Application_Step_Description_2'] = ''
+        self.data_collector['Application_Step_Description_3'] = ''
+        self.data_collector['Application_Step_Description_4'] = ''
+        self.data_collector['Application_Step_Description_5'] = ''
+        self.data_collector['Application_Step_Description_6'] = ''
+        self.data_collector['Application_Step_Description_7'] = ''
+        self.data_collector['Application_Step_Description_8'] = ''
+        self.data_collector['Application_Steps_Widget_1'] = ''
+        self.data_collector['Application_Steps_Widget_2'] = ''
+        self.data_collector['Application_Steps_Widget_3'] = ''
+        self.data_collector['Application_Steps_Widget_4'] = ''
+        self.data_collector['Application_Steps_Widget_5'] = ''
+        self.data_collector['Application_Steps_Widget_6'] = ''
+        self.data_collector['Application_Steps_Widget_7'] = ''
+        self.data_collector['Application_Steps_Widget_8'] = ''
+        self.data_collector['Answer_Key'] = ''
+        self.data_collector['Video_Audio_Assessment_Flag'] = 0
+        self.data_collector['Application_Video_Link'] = ''
+        self.data_collector['Application_Video_Running_Notes'] = ''
+
+        self.data_collector["NumberOfQuestions"] = 0
+
+        self.title_image_path_full = ""
+        self.factual_image1_path_full = ""
+        self.factual_image2_path_full =""
+        self.factual_image3_path_full =""
+        self.filename_vid_title_full = ""
+        self.application_image1_path_full =""
+        self.application_image2_path_full =""
+        self.application_image3_path_full =""
+        self.application_image4_path_full =""
+        self.application_image5_path_full =""
+        self.application_image6_path_full =""
+        self.application_image7_path_full =""
+        self.application_image8_path_full =""
 
     def resize(self,event):
         self.grid_forget()
@@ -71,7 +131,7 @@ class MagicEditWizard(Frame):
         self.title_running_notes_label = ttk.Label(self.title_frame, text="Running Notes", style='Edit.TLabelframe.Label')
         self.running_notes = self.lesson_dict[0].get("Title_Running_Notes")
         self.title_running_notes = tk.Text(self.title_frame, wrap=tk.WORD, width=30, height=5, pady=2)
-        self.title_running_notes .insert("1.0",self.running_notes)
+        self.title_running_notes.insert("1.0",self.running_notes)
 
         self.video_var = StringVar()
         self.video_var.set(self.lesson_dict[0].get("Title_Video"))
@@ -106,7 +166,7 @@ class MagicEditWizard(Frame):
         self.factual_image_var.set(self.lesson_dict[0]["Factual_Image1"])
         self.factual_term_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term_image_button = ttk.Button(self.factual_frame, text='Add Image',
-                                               command=lambda id=2: self.add_factual_image(id), style='Green.TButton')
+                                               command=lambda id=1: self.add_factual_image(id), style='Green.TButton')
         self.factual_image_label = ttk.Label(self.factual_frame, textvariable=self.factual_image_var,
                                             style='Edit.TLabelframe.Label')
 
@@ -116,10 +176,8 @@ class MagicEditWizard(Frame):
 
         self.factual_term_desc_label.grid(row=1, column=0, pady=10)
         self.factual_term_desc_text.grid(row=1, column=1, pady=10)
-        text_insert_desc1 = self.lesson_dict[0]["Factual_Term1_Description"]
-        self.factual_term_desc_text.insert("1.0", text_insert_desc1)
-        self.factual_text_term1_var.set(self.lesson_dict[0]["Factual_Term1"])
-        self.factual_image_var.set(self.lesson_dict[0]["Factual_Image1"])
+
+
         self.factual_term_image_button.grid(row=3,column=0,pady=10)
         self.factual_image_label.grid(row=3, column=3, pady=10)
 
@@ -150,11 +208,11 @@ class MagicEditWizard(Frame):
         self.factual_image3_var = StringVar()
         self.factual_text_term3_var = StringVar()
         self.factual_term3_label = ttk.Label(self.factual_frame, text="Definition or New Term", style='Edit.TLabelframe.Label')
-        self.factual_term3_text = ttk.Entry(self.factual_frame,textvariable=self.factual_text_term2_var)
+        self.factual_term3_text = ttk.Entry(self.factual_frame,textvariable=self.factual_text_term3_var)
         self.factual_term3_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=5)
         self.factual_term3_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term3_image_button = ttk.Button(self.factual_frame, text='Add Image',
-                                               command=lambda id=2: self.add_factual_image(id), style='Green.TButton')
+                                               command=lambda id=3: self.add_factual_image(id), style='Green.TButton')
         self.factual_image_label3 = ttk.Label(self.factual_frame, textvariable=self.factual_image3_var,
                                               style='Edit.TLabelframe.Label')
         self.factual_term3_label.grid(row=9, column=0, pady=10)
@@ -186,6 +244,8 @@ class MagicEditWizard(Frame):
         self.number_of_steps = self.lesson_dict[0]['Application_Steps_Number']
         self.configure_steps(self.number_of_steps)
 
+
+
     def show_individual_steps(self,selected_number):
 
         for widget in self.apply_activity_steps_frame.winfo_children():
@@ -196,31 +256,60 @@ class MagicEditWizard(Frame):
 
 
     def configure_steps(self,number_of_steps):
-        self.step_text1 = ttk.Entry(self.apply_activity_steps_frame)
-        self.step_text2 = ttk.Entry(self.apply_activity_steps_frame)
-        self.step_text3 = ttk.Entry(self.apply_activity_steps_frame)
-        self.step_text4 = ttk.Entry(self.apply_activity_steps_frame)
-        self.step_text5 = ttk.Entry(self.apply_activity_steps_frame)
-        self.step_text6 = ttk.Entry(self.apply_activity_steps_frame)
-        self.step_text7 = ttk.Entry(self.apply_activity_steps_frame)
-        self.step_text8 = ttk.Entry(self.apply_activity_steps_frame)
-        self.step_image_button1 = ttk.Button(self.apply_activity_steps_frame, text='Add Image', style='Green.TButton')
-        self.step_image_button2 = ttk.Button(self.apply_activity_steps_frame, text='Add Image', style='Green.TButton')
-        self.step_image_button3 = ttk.Button(self.apply_activity_steps_frame, text='Add Image', style='Green.TButton')
-        self.step_image_button4 = ttk.Button(self.apply_activity_steps_frame, text='Add Image', style='Green.TButton')
-        self.step_image_button5 = ttk.Button(self.apply_activity_steps_frame, text='Add Image', style='Green.TButton')
-        self.step_image_button6 = ttk.Button(self.apply_activity_steps_frame, text='Add Image', style='Green.TButton')
-        self.step_image_button7 = ttk.Button(self.apply_activity_steps_frame, text='Add Image', style='Green.TButton')
-        self.step_image_button8 = ttk.Button(self.apply_activity_steps_frame, text='Add Image', style='Green.TButton')
+
+        self.step_text1_var = StringVar()
+        self.step_text1_var.set(self.lesson_dict[0]["Application_Step_Description_1"])
+        self.step_text2_var = StringVar()
+        self.step_text2_var.set(self.lesson_dict[0]["Application_Step_Description_2"])
+        self.step_text3_var = StringVar()
+        self.step_text3_var.set(self.lesson_dict[0]["Application_Step_Description_3"])
+        self.step_text4_var = StringVar()
+        self.step_text4_var.set(self.lesson_dict[0]["Application_Step_Description_4"])
+        self.step_text5_var = StringVar()
+        self.step_text5_var.set(self.lesson_dict[0]["Application_Step_Description_5"])
+        self.step_text6_var = StringVar()
+        self.step_text6_var.set(self.lesson_dict[0]["Application_Step_Description_6"])
+        self.step_text7_var = StringVar()
+        self.step_text7_var.set(self.lesson_dict[0]["Application_Step_Description_7"])
+        self.step_text8_var = StringVar()
+        self.step_text8_var.set(self.lesson_dict[0]["Application_Step_Description_8"])
+
+        self.step_text1 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text1_var)
+        self.step_text2 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text2_var)
+        self.step_text3 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text3_var)
+        self.step_text4 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text4_var)
+        self.step_text5 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text5_var)
+        self.step_text6 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text6_var)
+        self.step_text7 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text7_var)
+        self.step_text8 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text8_var)
+        self.step_image_button1 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=1: self.add_application_image(id), text='Add Image', style='Green.TButton')
+        self.step_image_button2 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=2: self.add_application_image(id), text='Add Image', style='Green.TButton')
+        self.step_image_button3 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=3: self.add_application_image(id), text='Add Image', style='Green.TButton')
+        self.step_image_button4 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=4: self.add_application_image(id), text='Add Image', style='Green.TButton')
+        self.step_image_button5 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=5: self.add_application_image(id), text='Add Image', style='Green.TButton')
+        self.step_image_button6 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=6: self.add_application_image(id), text='Add Image', style='Green.TButton')
+        self.step_image_button7 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=7: self.add_application_image(id), text='Add Image', style='Green.TButton')
+        self.step_image_button8 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=8: self.add_application_image(id), text='Add Image', style='Green.TButton')
+
+
+
 
         self.step1_image1 = StringVar()
+        self.step1_image1.set(self.lesson_dict[0]["Application_Steps_Widget_1"])
         self.step2_image2 = StringVar()
+        self.step2_image2.set(self.lesson_dict[0]["Application_Steps_Widget_2"])
         self.step3_image3 = StringVar()
+        self.step3_image3.set(self.lesson_dict[0]["Application_Steps_Widget_3"])
         self.step4_image4 = StringVar()
+        self.step4_image4.set(self.lesson_dict[0]["Application_Steps_Widget_4"])
         self.step5_image5 = StringVar()
+        self.step5_image5.set(self.lesson_dict[0]["Application_Steps_Widget_5"])
         self.step6_image6 = StringVar()
+        self.step6_image6.set(self.lesson_dict[0]["Application_Steps_Widget_6"])
         self.step7_image7 = StringVar()
+        self.step7_image7.set(self.lesson_dict[0]["Application_Steps_Widget_7"])
         self.step8_image8 = StringVar()
+        self.step8_image8.set(self.lesson_dict[0]["Application_Steps_Widget_8"])
 
         self.step1_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step1_image1,
                                      style='Edit.TLabelframe.Label')
@@ -285,45 +374,241 @@ class MagicEditWizard(Frame):
                 self.step8_label.grid(row=steps, column=4)
             steps += 1
             self.apply_activity_steps_frame.grid(row=1,column=0,columnspan=2)
-
+        self.index += 1
     def create_ip_edit_page(self, edit_lesson):
-        pass
+        self.create_question_Label = ttk.Label(self.ip_frame, text='Add your questions here', wraplength=300,
+                                          style='Edit.TLabelframe.Label')
+
+        self.create_question_text = tk.Text(self.ip_frame, wrap=tk.WORD, width=70, height=40)
+        question_text = self.lesson_dict[0]["IP_Questions"]
+        self.create_question_text.insert("1.0", question_text)
+        self.create_question_Label.grid(row=1, column=0)
+        self.create_question_text.grid(row=1, column=1)
+        self.index += 1
+
 
     def add_title_image(self):
 
         self.title_image_path_full, title_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
         self.image_var.set(title_image_basename)
-        pass
 
-    def add_factual_image(self):
 
-        self.factual_image_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
-        self.factual_image_var.set(factual_image_basename)
+    def add_factual_image(self,index):
+
+
+        if index == 1:
+            self.factual_image1_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.factual_image_var.set(factual_image_basename)
+        elif index == 2:
+            self.factual_image2_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.factual_image2_var.set(factual_image_basename)
+        else:
+            self.factual_image3_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.factual_image3_var.set(factual_image_basename)
+
+    def add_application_image(self, index):
+
+
+        if index == 1:
+            self.application_image1_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.step1_image1.set(application_image_basename)
+        elif index == 2:
+            self.application_image2_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.step2_image2.set(application_image_basename)
+        elif index == 3:
+            self.application_image3_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.step3_image3.set(application_image_basename)
+        elif index == 4:
+            self.application_image4_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.step4_image4.set(application_image_basename)
+        elif index == 5:
+            self.application_image5_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.step5_image5.set(application_image_basename)
+        elif index == 6:
+            self.application_image6_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.step6_image6.set(application_image_basename)
+        elif index == 7:
+            self.application_image7_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.step7_image7.set(application_image_basename)
+        elif index == 8:
+            self.application_image8_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
+            self.step8_image8.set(application_image_basename)
 
     def add_title_video(self):
 
-        self.title_video_path_full, title_video_basename = Edit_Utils.add_file(Data_Flow.file_root)
+        self.filename_vid_title_full, title_video_basename = Edit_Utils.add_file(Data_Flow.file_root)
         self.video_var.set(title_video_basename)
+
+    def save_data(self):
+
+
+        if self.data_collector["Title_Image"] == "":
+            self.data_collector["Title_Image"] = "LR_Placeholder.jpeg"
+            self.title_image_path_full = Data_Flow.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
+
+
+        if self.data_collector["Factual_Image1"] == "":
+            self.data_collector["Factual_Image1"] = "LR_Placeholder.jpeg"
+            self.factual_image1_path_full = Data_Flow.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
+
+
+        if self.data_collector["Factual_Image2"] == "":
+            self.data_collector["Factual_Image2"] = "LR_Placeholder.jpeg"
+            self.factual_image2_path_full = Data_Flow.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
+
+
+        if self.data_collector["Factual_Image3"] == "":
+            self.data_collector["Factual_Image3"] = "LR_Placeholder.jpeg"
+            self.factual_image3_path_full = Data_Flow.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
+
+        lesson_file_manager = Lesson_File_Manager.LessonFileManager(Data_Flow.file_root,self.to_edit_lesson)
+
+        if (self.title_image_path_full != ""):
+            lesson_file_manager.add_image_file(self.title_image_path_full)
+
+        if (self.filename_vid_title_full != ""):
+            lesson_file_manager.add_video_file(self.filename_vid_title_full)
+        if (self.factual_image1_path_full != ""):
+            lesson_file_manager.add_image_file(self.factual_image1_path_full)
+        if (self.factual_image2_path_full != ""):
+            lesson_file_manager.add_image_file(self.factual_image2_path_full)
+        if (self.factual_image3_path_full != ""):
+            lesson_file_manager.add_image_file(self.factual_image3_path_full)
+
+        if (self.application_image1_path_full != ""):
+            lesson_file_manager.add_image_file(self.application_image1_path_full)
+        if (self.application_image2_path_full != ""):
+            lesson_file_manager.add_image_file(self.application_image2_path_full)
+        if (self.application_image3_path_full != ""):
+            lesson_file_manager.add_image_file(self.application_image3_path_full)
+        if (self.application_image4_path_full != ""):
+            lesson_file_manager.add_image_file(self.application_image4_path_full)
+        if (self.application_image5_path_full != ""):
+            lesson_file_manager.add_image_file(self.application_image5_path_full)
+        if (self.application_image6_path_full != ""):
+            lesson_file_manager.add_image_file(self.application_image6_path_full)
+        if (self.application_image7_path_full != ""):
+            lesson_file_manager.add_image_file(self.application_image7_path_full)
+        if (self.application_image8_path_full != ""):
+            lesson_file_manager.add_image_file(self.application_image8_path_full)
+
+        Data_Flow.save_all_data(self.data_collector)
+
+
+
+    def process_save(self,index):
+        if index == 1:
+            self.data_collector["Lesson_Title"]=self.title_text_var.get()
+            self.data_collector["Title_Image"]=self.image_var.get()
+            self.data_collector["Title_Video"] = self.video_var.get()
+            self.data_collector["Title_Running_Notes"] = self.title_running_notes.get('1.0', tk.END)
+        if index == 2:
+            self.data_collector["Factual_Term1"] = self.factual_term_text.get()
+            self.data_collector["Factual_Term1_Description"] = self.factual_term_desc_text.get('1.0', 'end')
+            self.data_collector["Factual_Image1"]= self.factual_image_var.get()
+
+            self.data_collector['Factual_Term2'] = self.factual_term2_text.get()
+            self.data_collector['Factual_Term2_Description'] = self.factual_term2_desc_text.get('1.0', 'end')
+            self.data_collector["Factual_Image2"] = self.factual_image2_var.get()
+
+            self.data_collector["Factual_Term3"] = self.factual_term3_text.get()
+            self.data_collector["Factual_Term3_Description"] = self.factual_term3_desc_text.get('1.0', 'end')
+            self.data_collector["Factual_Image3"] = self.factual_image3_var.get()
+        if index == 3:
+            self.data_collector["Application_Steps_Number"]=self.selected_steps.get()
+            final_steps = int(self.selected_steps.get())
+            final_step_index = 1
+            while final_step_index <= final_steps:
+                if final_step_index == 1:
+                    self.data_collector["Application_Step_Description_1"] = self.step_text1_var.get()
+                    self.data_collector["Application_Steps_Widget_1"] = self.step1_image1.get()
+                if final_step_index == 2:
+                    self.data_collector["Application_Step_Description_2"] = self.step_text2_var.get()
+                    self.data_collector["Application_Steps_Widget_2"] = self.step2_image2.get()
+                if final_step_index == 3:
+                    self.data_collector["Application_Step_Description_3"] = self.step_text3_var.get()
+                    self.data_collector["Application_Steps_Widget_3"] = self.step3_image3.get()
+                if final_step_index == 4:
+                    self.data_collector["Application_Step_Description_4"] = self.step_text4_var.get()
+                    self.data_collector["Application_Steps_Widget_4"] = self.step4_image4.get()
+                if final_step_index == 5:
+                    self.data_collector["Application_Step_Description_5"] = self.step_text5_var.get()
+                    self.data_collector["Application_Steps_Widget_5"] = self.step5_image5.get()
+                if final_step_index == 6:
+                    self.data_collector["Application_Step_Description_6"] = self.step_text6_var.get()
+                    self.data_collector["Application_Steps_Widget_6"] = self.step6_image6.get()
+                if final_step_index == 7:
+                    self.data_collector["Application_Step_Description_7"] = self.step_text7_var.get()
+                    self.data_collector["Application_Steps_Widget_7"] = self.step7_image7.get()
+                if final_step_index == 8:
+                    self.data_collector["Application_Step_Description_8"] = self.step_text8_var.get()
+                    self.data_collector["Application_Steps_Widget_8"] = self.step8_image8.get()
+                final_step_index += 1
+        if index == 4:
+            self.data_collector["IP_Questions"] = self.create_question_text.get("1.0",tk.END)
+
+            self.data_collector["Lesson_Type"] = ""
+            self.data_collector["Lesson_Template"] = ""
+            self.data_collector["Application_Mode"] = "Activity"
+            self.data_collector['Answer_Key'] = ""
+            self.data_collector['Video_Audio_Assessment_Flag']= ""
+            self.data_collector['Application_Video_Link'] = ""
+            self.data_collector['Application_Video_Running_Notes'] = ""
+            self.data_collector['NumberOfQuestions'] = ""
+
+
 
     def next_page(self):
         if (self.index == 1):
             self.title_frame.grid_forget()
+            self.process_save(self.index)
             self.create_factual_edit_page(self.to_edit_lesson)
             self.factual_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
+
             return
         if (self.index == 2):
             self.factual_frame.grid_forget()
+            self.process_save(self.index)
             self.create_application_edit_page(self.to_edit_lesson)
             self.apply_activity_frame.grid(row=0, column=0, pady=50, sticky=tk.NSEW)
 
+            return
+        if (self.index == 3):
+            self.apply_activity_frame.grid_forget()
+            self.process_save(self.index)
+            self.create_ip_edit_page(self.to_edit_lesson)
+            self.next_button.configure(text="Submit")
+            self.ip_frame.grid(row=0, column=0, pady=50, sticky=tk.NSEW)
+            return
+        if (self.index == 4):
+            self.ip_frame.grid_forget()
+            self.process_save(self.index)
+            self.save_data()
+            self.parent.destroy()
+
+
     def previous_page(self):
-        pass
+        self.next_button.config(text='Next')
+        if self.index == 1:
+           
+            self.factual_frame.grid_forget()
+            self.title_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
+        if self.index == 2:
+            self.index = 1
+            self.apply_activity_frame.grid_forget()
+            self.factual_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
+        if self.index == 4:
+            self.index = 2
+            self.ip_frame.grid_forget()
+            self.apply_activity_frame.grid(row=0, column=0, pady=50, sticky=tk.NSEW)
+
+
 
 if __name__== "__main__":
         edit_app = tk.Tk()
         edit_app.title("Edit Learning Room Wizard")
         edit_app.selected_lessons = ""
-        edit_app.geometry("600x600")
+        edit_app.geometry("800x800")
         edit_app.configure(background='beige')
 
 

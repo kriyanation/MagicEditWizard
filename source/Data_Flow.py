@@ -1,6 +1,7 @@
 import sqlite3, os
 import random, sys
 import configparser
+import traceback
 from pathlib import Path
 from tkinter import StringVar,messagebox
 LESSON_ID = 5
@@ -56,6 +57,28 @@ def select_lesson_data(lessonid):
     except sqlite3.OperationalError:
         messagebox.showerror("Database Issue", "Issue with database connection")
 
+
+def save_all_data(data_collector):
+    connection = sqlite3.connect(db)
+    try:
+        print(data_collector)
+
+        cur = connection.cursor()
+        for key, values in data_collector.items():
+            print(key)
+            print(values)
+            sql = "update Magic_Science_Lessons set {} = ? where Lesson_ID = ?".format(key)
+            cur.execute(sql, (values, LESSON_ID))
+
+        connection.commit()
+    except (sqlite3.OperationalError ):
+        messagebox.showerror("Error Connecting to DB", "Saving the Information met with an error")
+        connection.set_trace_callback(print)
+        traceback.print_exc()
+
+    else:
+        messagebox.showinfo("Content Created",
+                            "Content created for you to view in the interactive player. \n Revision content generated")
 
 #get_Title()
 
