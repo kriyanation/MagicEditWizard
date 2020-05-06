@@ -135,11 +135,12 @@ class MagicEditWizard(Frame):
 
         self.video_var = StringVar()
         self.video_var.set(self.lesson_dict[0].get("Title_Video"))
-        self.title_video_file_label = ttk.Label(self.title_frame,textvariable=self.video_var,style="Edit.TLabelframe.Label")
+        #self.title_video_file_label = ttk.Label(self.title_frame,textvariable=self.video_var,style="Edit.TLabelframe.Label")
         self.image_var = StringVar()
         self.image_var.set(self.lesson_dict[0].get("Title_Image"))
         self.title_image_file_label = ttk.Label(self.title_frame, textvariable=self.image_var,style="Edit.TLabelframe.Label")
-
+        self.title_url_label = ttk.Label(self.title_frame, text="(OR) youtube URL", style='Edit.TLabelframe.Label')
+        self.title_video_url = ttk.Entry(self.title_frame,textvariable = self.video_var )
 
         self.title_label.grid(row=0,column=0,padx=20,pady=10)
         self.title_text.grid(row=0,column=1,padx=20,pady=10)
@@ -147,10 +148,12 @@ class MagicEditWizard(Frame):
         self.title_image_button.grid(row=1,column=1,padx=20,pady=10)
         self.title_image_video_label.grid(row=2,column=0,padx=20,pady=10)
         self.title_video_button.grid(row=2,column=1,padx=20,pady=10)
+        self.title_url_label.grid(row=2, column=2, pady=2)
+        self.title_video_url.grid(row=2, column=3, pady=2, padx=5)
         self.title_running_notes_label.grid(row=3,column=0,padx=20,pady=10)
         self.title_running_notes.grid(row=3,column=1,padx=20,pady=10)
         self.title_image_file_label.grid(row=1, column=3,pady=10)
-        self.title_video_file_label.grid(row=2, column=3,pady=10)
+       # self.title_video_file_label.grid(row=2, column=3,pady=10)
         self.title_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
         self.index += 1
 
@@ -327,6 +330,11 @@ class MagicEditWizard(Frame):
                                      style='Edit.TLabelframe.Label')
         self.step8_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step8_image8,
                                      style='Edit.TLabelframe.Label')
+        self.htmlvar = StringVar()
+        self.html_link = ttk.Entry(self.apply_activity_steps_frame, textvariable=self.htmlvar, width=20)
+        self.link_label = ttk.Label(self.apply_activity_steps_frame, text="Add an external link",
+                               style='Edit.TLabelframe.Label')
+        self.htmlvar.set(self.lesson_dict[0]["Apply_External_Link"])
 
         steps = 1
         while steps < number_of_steps + 1:
@@ -373,7 +381,9 @@ class MagicEditWizard(Frame):
                 self.step_image_button8.grid(row=steps, column=2, padx=20)
                 self.step8_label.grid(row=steps, column=4)
             steps += 1
-            self.apply_activity_steps_frame.grid(row=1,column=0,columnspan=2)
+        self.link_label.grid(row=steps, column=0, pady=50)
+        self.html_link.grid(row=steps, column=1, pady=50, padx=20)
+        self.apply_activity_steps_frame.grid(row=1,column=0,columnspan=2)
         self.index += 1
     def create_ip_edit_page(self, edit_lesson):
         self.create_question_Label = ttk.Label(self.ip_frame, text='Add your questions here', wraplength=300,
@@ -439,6 +449,7 @@ class MagicEditWizard(Frame):
         self.filename_vid_title_full, title_video_basename = Edit_Utils.add_file(Data_Flow.file_root)
         self.video_var.set(title_video_basename)
 
+
     def save_data(self):
 
 
@@ -492,7 +503,7 @@ class MagicEditWizard(Frame):
         if (self.application_image8_path_full != ""):
             lesson_file_manager.add_image_file(self.application_image8_path_full)
 
-        Data_Flow.save_all_data(self.data_collector)
+        Data_Flow.save_all_data(self.data_collector,lesson_file_manager)
 
 
 
@@ -518,6 +529,8 @@ class MagicEditWizard(Frame):
             self.data_collector["Application_Steps_Number"]=self.selected_steps.get()
             final_steps = int(self.selected_steps.get())
             final_step_index = 1
+
+
             while final_step_index <= final_steps:
                 if final_step_index == 1:
                     self.data_collector["Application_Step_Description_1"] = self.step_text1_var.get()
@@ -544,6 +557,7 @@ class MagicEditWizard(Frame):
                     self.data_collector["Application_Step_Description_8"] = self.step_text8_var.get()
                     self.data_collector["Application_Steps_Widget_8"] = self.step8_image8.get()
                 final_step_index += 1
+            self.data_collector["Apply_External_Link"] = self.htmlvar.get()
         if index == 4:
             self.data_collector["IP_Questions"] = self.create_question_text.get("1.0",tk.END)
 

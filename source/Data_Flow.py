@@ -4,6 +4,11 @@ import configparser
 import traceback
 from pathlib import Path
 from tkinter import StringVar,messagebox
+
+import assessment_generate
+from snapshot_view import SnapshotView
+import Lesson_File_Manager
+
 LESSON_ID = 5
 
 config = configparser.RawConfigParser()
@@ -58,7 +63,7 @@ def select_lesson_data(lessonid):
         messagebox.showerror("Database Issue", "Issue with database connection")
 
 
-def save_all_data(data_collector):
+def save_all_data(data_collector,lesson_file_manager):
     connection = sqlite3.connect(db)
     try:
         print(data_collector)
@@ -76,9 +81,21 @@ def save_all_data(data_collector):
         connection.set_trace_callback(print)
         traceback.print_exc()
 
+    try:
+         snapshot = SnapshotView(None,LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"notes_"+str(LESSON_ID)+".pdf")
+    except:
+        messagebox.showerror("Notes Generation","There was an error during notes generation")
+        traceback.print_exc()
+    try:
+        assessment = assessment_generate.generate_ip_paper(LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"ip_"+str(LESSON_ID)+".pdf",db)
+    except:
+        messagebox.showerror("Assessment Generation", "There was an error during assessments/points generation")
+        traceback.print_exc()
+
+
     else:
         messagebox.showinfo("Content Created",
-                            "Content created for you to view in the interactive player. \n Revision content generated")
+                            "Content created for you to view in the interactive player. \n Notes and Assessments modifield")
 
 #get_Title()
 

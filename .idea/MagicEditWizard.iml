@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../Assessment_Generate">
+      <sourceFolder url="file://$MODULE_DIR$/../Assessment_Generate/sources" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+    </content>
+    <content url="file://$MODULE_DIR$/../MagicPDFSnapshot">
+      <sourceFolder url="file://$MODULE_DIR$/../MagicPDFSnapshot/source" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

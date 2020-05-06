@@ -9,7 +9,7 @@ class LessonFileManager():
         print(file_root)
         self.image_path = file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(edit_lesson)+ os.path.sep + "images"
         self.video_path = file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(edit_lesson)+ os.path.sep + "videos"
-
+        self.lesson_dir = file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(edit_lesson)
     def add_image_file(self,filepath):
         try:
             copyfile(filepath,self.image_path+os.path.sep+os.path.basename(filepath))
