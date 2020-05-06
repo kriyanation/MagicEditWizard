@@ -11,20 +11,11 @@ import Lesson_File_Manager
 
 LESSON_ID = 5
 
-config = configparser.RawConfigParser()
-two_up = Path(__file__).parents[2]
-imageroot = ""
-videoroot = ""
 
 
-print(str(two_up)+'/magic.cfg')
-try:
-    config.read(str(two_up)+'/magic.cfg')
-    db = config.get("section1",'file_root')+os.path.sep+'MagicRoom.db'
-    file_root = config.get("section1",'file_root')
-except configparser.NoSectionError:
-    messagebox.showerror("Configuration Error", "No Section found or Configuration File Missing")
-    sys.exit()
+file_root = os.path.abspath(os.path.join(os.getcwd(), ".."))
+db = file_root + os.path.sep + "MagicRoom.db"
+
 
 saved_canvas = ""
 imageroot=file_root+os.path.sep+"Lessons"+os.path.sep+"Lesson"+str(LESSON_ID)+os.path.sep+"images"
