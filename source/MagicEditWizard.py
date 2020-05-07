@@ -622,7 +622,7 @@ if __name__== "__main__":
         edit_app = tk.Tk()
         edit_app.title("Edit Learning Room Wizard")
         edit_app.selected_lessons = ""
-        edit_app.geometry("800x800")
+        edit_app.geometry("1000x600")
         edit_app.configure(background='beige')
 
 
