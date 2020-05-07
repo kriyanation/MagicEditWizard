@@ -1,13 +1,11 @@
-import sqlite3, os
-import random, sys
-import configparser
+import os
+import sqlite3
+import sys
 import traceback
-from pathlib import Path
-from tkinter import StringVar,messagebox
+from tkinter import messagebox
 
 import assessment_generate
 from snapshot_view import SnapshotView
-import Lesson_File_Manager
 
 LESSON_ID = 5
 
@@ -63,6 +61,8 @@ def save_all_data(data_collector,lesson_file_manager):
         for key, values in data_collector.items():
             print(key)
             print(values)
+            if values is not None and isinstance(values,str):
+                values = values.strip()
             sql = "update Magic_Science_Lessons set {} = ? where Lesson_ID = ?".format(key)
             cur.execute(sql, (values, LESSON_ID))
 
