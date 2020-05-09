@@ -1,6 +1,9 @@
 import os
 import tkinter as tk
 from tkinter import Frame,ttk,messagebox, StringVar
+
+from PIL import Image, ImageTk
+
 import LessonList,Data_Flow,Edit_Utils
 import sqlite3
 import Lesson_File_Manager
@@ -112,6 +115,14 @@ class MagicEditWizard(Frame):
         self.application_image6_path_full =""
         self.application_image7_path_full =""
         self.application_image8_path_full =""
+        self.step1_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step2_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step3_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step4_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step5_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step6_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step7_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step8_label = ttk.Label(self.apply_activity_steps_frame)
 
     def resize(self,event):
         self.grid_forget()
@@ -128,7 +139,7 @@ class MagicEditWizard(Frame):
         self.title_image_video_label = ttk.Label(self.title_frame, text="Video Related to Title", style='Edit.TLabelframe.Label')
         self.title_video_button = ttk.Button(self.title_frame, text="Add Video", command=self.add_title_video, style='Green.TButton')
 
-        self.title_running_notes_label = ttk.Label(self.title_frame, text="Running Notes", style='Edit.TLabelframe.Label')
+        self.title_running_notes_label = ttk.Label(self.title_frame, text="Topic Introduction\n(2 to 3 lines)", style='Edit.TLabelframe.Label')
         self.running_notes = self.lesson_dict[0].get("Title_Running_Notes")
         self.title_running_notes = tk.Text(self.title_frame, wrap=tk.WORD, width=30, height=5, pady=2)
         self.title_running_notes.insert("1.0",self.running_notes)
@@ -138,7 +149,11 @@ class MagicEditWizard(Frame):
         #self.title_video_file_label = ttk.Label(self.title_frame,textvariable=self.video_var,style="Edit.TLabelframe.Label")
         self.image_var = StringVar()
         self.image_var.set(self.lesson_dict[0].get("Title_Image"))
-        self.title_image_file_label = ttk.Label(self.title_frame, textvariable=self.image_var,style="Edit.TLabelframe.Label")
+        self.image_title_preview_path = Data_Flow.imageroot+os.path.sep+self.image_var.get()
+        title_image = Image.open(self.image_title_preview_path)
+        title_image.thumbnail((100, 100))
+        self.title_image_display_preview = ImageTk.PhotoImage(title_image)
+        self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,background="beige")
         self.title_url_label = ttk.Label(self.title_frame, text="(OR) youtube URL", style='Edit.TLabelframe.Label')
         self.title_video_url = ttk.Entry(self.title_frame,textvariable = self.video_var )
 
@@ -170,8 +185,12 @@ class MagicEditWizard(Frame):
         self.factual_term_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=1: self.add_factual_image(id), style='Green.TButton')
-        self.factual_image_label = ttk.Label(self.factual_frame, textvariable=self.factual_image_var,
-                                            style='Edit.TLabelframe.Label')
+
+        factual_image = Image.open(Data_Flow.imageroot+os.path.sep+self.factual_image_var.get())
+        factual_image.thumbnail((100, 100))
+        self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
+        self.factual_image_label = ttk.Label(self.factual_frame, image = self.factual_image_display_preview,
+                                            background="beige")
 
 
         self.factual_term_label.grid(row=0, column=0, pady=10)
@@ -193,9 +212,12 @@ class MagicEditWizard(Frame):
         self.factual_term2_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term2_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=2: self.add_factual_image(id), style='Green.TButton')
-
-        self.factual_image_label2 = ttk.Label(self.factual_frame, textvariable=self.factual_image2_var,
-                                            style='Edit.TLabelframe.Label')
+        self.factual_image2_var.set(self.lesson_dict[0]["Factual_Image2"])
+        factual_image = Image.open(Data_Flow.imageroot + os.path.sep + self.factual_image2_var.get())
+        factual_image.thumbnail((100, 100))
+        self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
+        self.factual_image_label2 = ttk.Label(self.factual_frame, image =   self.factual_image_display_preview2  ,
+                                            background="beige")
         self.factual_term2_label.grid(row=5, column=0, pady=10)
         self.factual_term2_text.grid(row=5, column=1, pady=10)
         self.factual_term2_desc_label.grid(row=6, column=0, pady=10)
@@ -204,7 +226,7 @@ class MagicEditWizard(Frame):
         text_insert_desc2 = self.lesson_dict[0]["Factual_Term2_Description"]
         self.factual_term2_desc_text.insert("1.0", text_insert_desc2)
         self.factual_text_term2_var.set(self.lesson_dict[0]["Factual_Term2"])
-        self.factual_image2_var.set(self.lesson_dict[0]["Factual_Image2"])
+
         self.factual_term2_image_button.grid(row=7, column=0, pady=10)
         self.factual_image_label2.grid(row=7, column=3, pady=10)
 
@@ -216,8 +238,13 @@ class MagicEditWizard(Frame):
         self.factual_term3_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term3_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=3: self.add_factual_image(id), style='Green.TButton')
-        self.factual_image_label3 = ttk.Label(self.factual_frame, textvariable=self.factual_image3_var,
-                                              style='Edit.TLabelframe.Label')
+        self.factual_image3_var.set(self.lesson_dict[0]["Factual_Image3"])
+        factual_image = Image.open(Data_Flow.imageroot + os.path.sep + self.factual_image3_var.get())
+        factual_image.thumbnail((100, 100))
+        self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
+
+        self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
+                                              background="beige")
         self.factual_term3_label.grid(row=9, column=0, pady=10)
         self.factual_term3_text.grid(row=9, column=1, pady=10)
         self.factual_term3_desc_label.grid(row=10, column=0, pady=10)
@@ -225,7 +252,7 @@ class MagicEditWizard(Frame):
         text_insert_desc3 = self.lesson_dict[0]["Factual_Term3_Description"]
         self.factual_term3_desc_text.insert("1.0", text_insert_desc3)
         self.factual_text_term3_var.set(self.lesson_dict[0]["Factual_Term3"])
-        self.factual_image3_var.set(self.lesson_dict[0]["Factual_Image3"])
+
         self.factual_term3_image_button.grid(row=11, column=0, pady=10)
         self.factual_image_label3.grid(row=11, column=3, pady=10)
         self.index = 2
@@ -313,23 +340,80 @@ class MagicEditWizard(Frame):
         self.step7_image7.set(self.lesson_dict[0]["Application_Steps_Widget_7"])
         self.step8_image8 = StringVar()
         self.step8_image8.set(self.lesson_dict[0]["Application_Steps_Widget_8"])
+        try:
+            apply_image = Image.open(Data_Flow.imageroot + os.path.sep + self.step1_image1.get())
+            apply_image.thumbnail((100, 100))
+            self.apply_image_display_preview1 = ImageTk.PhotoImage(apply_image)
+            self.step1_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview1,
+                                         background="beige")
+        except:
+            print("invlid image")
 
-        self.step1_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step1_image1,
-                                     style='Edit.TLabelframe.Label')
-        self.step2_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step2_image2,
-                                     style='Edit.TLabelframe.Label')
-        self.step3_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step3_image3,
-                                     style='Edit.TLabelframe.Label')
-        self.step4_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step4_image4,
-                                     style='Edit.TLabelframe.Label')
-        self.step5_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step5_image5,
-                                     style='Edit.TLabelframe.Label')
-        self.step6_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step6_image6,
-                                     style='Edit.TLabelframe.Label')
-        self.step7_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step7_image7,
-                                     style='Edit.TLabelframe.Label')
-        self.step8_label = ttk.Label(self.apply_activity_steps_frame, textvariable=self.step8_image8,
-                                     style='Edit.TLabelframe.Label')
+
+        try:
+            apply_image = Image.open(Data_Flow.imageroot + os.path.sep + self.step2_image2.get())
+            apply_image.thumbnail((100, 100))
+            self.apply_image_display_preview2 = ImageTk.PhotoImage(apply_image)
+            self.step2_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview2
+                                         )
+        except:
+            print("Invalid Image")
+        try:
+            apply_image = Image.open(Data_Flow.imageroot + os.path.sep + self.step3_image3.get())
+            apply_image.thumbnail((100, 100))
+            self.apply_image_display_preview3 = ImageTk.PhotoImage(apply_image)
+            self.step3_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview3)
+
+        except:
+            print("invlid image")
+
+        try:
+            apply_image = Image.open(Data_Flow.imageroot + os.path.sep + self.step4_image4.get())
+            apply_image.thumbnail((100, 100))
+            self.apply_image_display_preview4 = ImageTk.PhotoImage(apply_image)
+            self.step4_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview4
+                                         )
+        except:
+            print("invlid image")
+
+
+        try:
+            apply_image = Image.open(Data_Flow.imageroot + os.path.sep + self.step5_image5.get())
+            apply_image.thumbnail((100, 100))
+            self.apply_image_display_preview5 = ImageTk.PhotoImage(apply_image)
+            self.step5_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview5
+                                         )
+        except:
+            print("invlid image")
+
+        try:
+            apply_image = Image.open(Data_Flow.imageroot + os.path.sep + self.step6_image6.get())
+            apply_image.thumbnail((100, 100))
+            self.apply_image_display_preview6 = ImageTk.PhotoImage(apply_image)
+            self.step6_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview6
+                                         )
+        except:
+            print("invlid image")
+
+        try:
+
+            apply_image = Image.open(Data_Flow.imageroot + os.path.sep + self.step7_image7.get())
+            apply_image.thumbnail((100, 100))
+            self.apply_image_display_preview7 = ImageTk.PhotoImage(apply_image)
+            self.step7_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview7,
+                                         )
+        except:
+            print("invalid image")
+        try:
+            apply_image = Image.open(Data_Flow.imageroot + os.path.sep + self.step8_image8.get())
+            apply_image.thumbnail((100, 100))
+            self.apply_image_display_preview8 = ImageTk.PhotoImage(apply_image)
+            self.step8_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview8,
+                                         )
+        except:
+            print("invlid image")
+
+
         self.htmlvar = StringVar()
         self.html_link = ttk.Entry(self.apply_activity_steps_frame, textvariable=self.htmlvar, width=20)
         self.link_label = ttk.Label(self.apply_activity_steps_frame, text="Add an external link",
@@ -344,42 +428,54 @@ class MagicEditWizard(Frame):
                 self.step_label.grid(row=steps, column=0, padx=20)
                 self.step_text1.grid(row=steps, column=1, padx=20)
                 self.step_image_button1.grid(row=steps, column=2, padx=20)
-                self.step1_label.grid(row=steps, column=4)
+                if hasattr(self,"step1_label"):
+                    self.step1_label.grid(row=steps, column=4)
             if steps == 2:
                 self.step_label.grid(row=steps, column=0, padx=20)
                 self.step_text2.grid(row=steps, column=1, padx=20)
                 self.step_image_button2.grid(row=steps, column=2, padx=20)
-                self.step2_label.grid(row=steps, column=4)
+                if hasattr(self, "step2_label"):
+                    self.step2_label.grid(row=steps, column=4)
+
             if steps == 3:
                 self.step_label.grid(row=steps, column=0, padx=20)
                 self.step_text3.grid(row=steps, column=1, padx=20)
                 self.step_image_button3.grid(row=steps, column=2, padx=20)
                 self.step3_label.grid(row=steps, column=4)
+                if hasattr(self, "step3_label"):
+                    self.step3_label.grid(row=steps, column=4)
             if steps == 4:
                 self.step_label.grid(row=steps, column=0, padx=20)
                 self.step_text4.grid(row=steps, column=1, padx=20)
                 self.step_image_button4.grid(row=steps, column=2, padx=20)
-                self.step4_label.grid(row=steps, column=4)
+                if hasattr(self, "step4_label"):
+                    self.step4_label.grid(row=steps, column=4)
+
             if steps == 5:
                 self.step_label.grid(row=steps, column=0, padx=20)
                 self.step_text5.grid(row=steps, column=1, padx=20)
                 self.step_image_button5.grid(row=steps, column=2, padx=20)
-                self.step5_label.grid(row=steps, column=4)
+                if hasattr(self, "step5_label"):
+                    self.step5_label.grid(row=steps, column=4)
+
             if steps == 6:
                 self.step_label.grid(row=steps, column=0, padx=20)
                 self.step_text6.grid(row=steps, column=1, padx=20)
                 self.step_image_button6.grid(row=steps, column=2, padx=20)
-                self.step6_label.grid(row=steps, column=4)
+                if hasattr(self, "step6_label"):
+                    self.step6_label.grid(row=steps, column=4)
             if steps == 7:
                 self.step_label.grid(row=steps, column=0, padx=20)
                 self.step_text7.grid(row=steps, column=1, padx=20)
                 self.step_image_button7.grid(row=steps, column=2, padx=20)
-                self.step7_label.grid(row=steps, column=4)
+                if hasattr(self, "step7_label"):
+                     self.step7_label.grid(row=steps, column=4)
             if steps == 8:
                 self.step_label.grid(row=steps, column=0, padx=20)
                 self.step_text8.grid(row=steps, column=1, padx=20)
                 self.step_image_button8.grid(row=steps, column=2, padx=20)
-                self.step8_label.grid(row=steps, column=4)
+                if hasattr(self, "step8_label"):
+                    self.step8_label.grid(row=steps, column=4)
             steps += 1
         self.link_label.grid(row=steps, column=0, pady=50)
         self.html_link.grid(row=steps, column=1, pady=50, padx=20)
@@ -401,20 +497,53 @@ class MagicEditWizard(Frame):
 
         self.title_image_path_full, title_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
         self.image_var.set(title_image_basename)
+        title_image = Image.open(self.title_image_path_full)
+        title_image.thumbnail((100, 100))
+        self.title_image_file_label.grid_forget()
 
+        self.title_image_display_preview = ImageTk.PhotoImage(title_image)
+        self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,
+                                                background="beige")
+        self.title_image_file_label.grid(row=1, column=3, padx=20, pady=10)
 
     def add_factual_image(self,index):
 
-
+        factual_image = None
         if index == 1:
             self.factual_image1_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.factual_image_var.set(factual_image_basename)
+            factual_image = Image.open(self.factual_image1_path_full)
+            factual_image.thumbnail((100, 100))
+            self.factual_image_label.grid_forget()
+            self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
+            self.factual_image_label = ttk.Label(self.factual_frame, image=self.factual_image_display_preview,
+                                                    background="beige")
+            self.factual_image_label.grid(row=3, column=3, padx=20, pady=10)
+
+
         elif index == 2:
             self.factual_image2_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.factual_image2_var.set(factual_image_basename)
+            factual_image = Image.open(self.factual_image2_path_full)
+            factual_image.thumbnail((100, 100))
+            self.factual_image_label2.grid_forget()
+            self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
+            self.factual_image_label2 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview2,
+                                                 background="beige")
+            self.factual_image_label2.grid(row=7, column=3, padx=20, pady=10)
         else:
             self.factual_image3_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.factual_image3_var.set(factual_image_basename)
+            factual_image = Image.open(self.factual_image3_path_full)
+            factual_image.thumbnail((100, 100))
+            self.factual_image_label3.grid_forget()
+            self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
+            self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
+                                                 background="beige")
+            self.factual_image_label3.grid(row=11, column=3, padx=20, pady=10)
+
+
+
 
     def add_application_image(self, index):
 
@@ -422,27 +551,108 @@ class MagicEditWizard(Frame):
         if index == 1:
             self.application_image1_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.step1_image1.set(application_image_basename)
+            try:
+                apply_image = Image.open(self.application_image1_path_full)
+                apply_image.thumbnail((100, 100))
+                self.apply_image_display_preview1 = ImageTk.PhotoImage(apply_image)
+                self.step1_label.grid_forget()
+                self.step1_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview1,
+                                             )
+                self.step1_label.grid(row=index, column=4, padx=20, pady=10)
+            except:
+                print("invlid image")
+
         elif index == 2:
             self.application_image2_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.step2_image2.set(application_image_basename)
+            try:
+                apply_image = Image.open(self.application_image2_path_full)
+                apply_image.thumbnail((100, 100))
+                self.apply_image_display_preview2 = ImageTk.PhotoImage(apply_image)
+                self.step2_label.grid_forget()
+                self.step2_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview2,
+                                             )
+                self.step2_label.grid(row=index, column=4, padx=20, pady=10)
+            except:
+                print("invlid image")
         elif index == 3:
             self.application_image3_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.step3_image3.set(application_image_basename)
+            try:
+                apply_image = Image.open(self.application_image3_path_full)
+                apply_image.thumbnail((100, 100))
+                self.apply_image_display_preview3 = ImageTk.PhotoImage(apply_image)
+                self.step3_label.grid_forget()
+                self.step3_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview3,
+                                             )
+                self.step3_label.grid(row=index, column=4, padx=20, pady=10)
+            except:
+                print("invlid image")
         elif index == 4:
             self.application_image4_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.step4_image4.set(application_image_basename)
+            try:
+                apply_image = Image.open(self.application_image4_path_full)
+                apply_image.thumbnail((100, 100))
+                self.apply_image_display_preview4 = ImageTk.PhotoImage(apply_image)
+                self.step4_label.grid_forget()
+                self.step4_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview4,
+                                             )
+                self.step4_label.grid(row=index, column=4, padx=20, pady=10)
+            except:
+                print("invlid image")
         elif index == 5:
             self.application_image5_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.step5_image5.set(application_image_basename)
+            try:
+                apply_image = Image.open(self.application_image5_path_full)
+                apply_image.thumbnail((100, 100))
+                self.apply_image_display_preview5 = ImageTk.PhotoImage(apply_image)
+                self.step5_label.grid_forget()
+                self.step5_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview5,
+                                             )
+                self.step5_label.grid(row=index, column=4, padx=20, pady=10)
+            except:
+                print("invlid image")
         elif index == 6:
             self.application_image6_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.step6_image6.set(application_image_basename)
+            try:
+                apply_image = Image.open(self.application_image6_path_full)
+                apply_image.thumbnail((100, 100))
+                self.apply_image_display_preview6 = ImageTk.PhotoImage(apply_image)
+                self.step6_label.grid_forget()
+                self.step6_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview6,
+                                             )
+                self.step6_label.grid(row=index, column=4, padx=20, pady=10)
+            except:
+                print("invlid image")
         elif index == 7:
             self.application_image7_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.step7_image7.set(application_image_basename)
+            try:
+                apply_image = Image.open(self.application_image7_path_full)
+                apply_image.thumbnail((100, 100))
+                self.apply_image_display_preview7 = ImageTk.PhotoImage(apply_image)
+                self.step7_label.grid_forget()
+                self.step7_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview7,
+                                             )
+                self.step7_label.grid(row=index, column=4, padx=20, pady=10)
+            except:
+                print("invlid image")
         elif index == 8:
             self.application_image8_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow.file_root)
             self.step8_image8.set(application_image_basename)
+            try:
+                apply_image = Image.open(self.application_image8_path_full)
+                apply_image.thumbnail((100, 100))
+                self.apply_image_display_preview8 = ImageTk.PhotoImage(apply_image)
+                self.step8_label.grid_forget()
+                self.step8_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview8,
+                                             )
+                self.step8_label.grid(row=index, column=4, padx=20, pady=10)
+            except:
+                print("invlid image")
 
     def add_title_video(self):
 
