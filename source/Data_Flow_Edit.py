@@ -19,8 +19,6 @@ db = file_root + os.path.sep + "MagicRoom.db"
 
 
 saved_canvas = ""
-imageroot=file_root+os.path.sep+"Lessons"+os.path.sep+"Lesson"+str(LESSON_ID)+os.path.sep+"images"
-videoroot=file_root+os.path.sep+"Lessons"+os.path.sep+"Lesson"+str(LESSON_ID)+os.path.sep+"videos"
 
 
 
@@ -92,6 +90,6 @@ def save_all_data(data_collector,lesson_file_manager):
         messagebox.showinfo("Content Created",
                             "Content created for you to view in the interactive player. \n Notes and Assessments modifield")
         logger.info("Lesson Record Modified")
-        sys.exit()
+
 #get_Title()
 

@@ -1,3 +1,4 @@
+import logging
 import os
 import tkinter as tk
 from tkinter import Frame,ttk,messagebox, StringVar, Toplevel
@@ -5,17 +6,18 @@ from tkinter import Frame,ttk,messagebox, StringVar, Toplevel
 from PIL import Image, ImageTk
 
 import LessonList,Data_Flow_Edit,Edit_Utils
-import sqlite3
+
 import Lesson_File_Manager
 
-
+logger = logging.getLogger("MagicLogger")
 class MagicEditWizard(Toplevel):
     def __init__(self,parent,*args,**kwargs):
 
         super().__init__(*args, **kwargs)
-
+        logger.info("Entering Edit Wizard Initialize")
         self.base_frame = tk.Frame(self, background="beige")
-        self.base_frame.rowconfigure(0, weight=1)
+
+        #self.base_frame.rowconfigure(0, weight=1)
         self.base_frame.columnconfigure(0, weight=1)
         self.base_frame.grid(row=0, column=0)
 
@@ -26,7 +28,7 @@ class MagicEditWizard(Toplevel):
         self.apply_activity_frame = Frame(self.base_frame)
         self.apply_activity_steps_frame = Frame(self.apply_activity_frame)
         self.ip_frame = Frame(self.base_frame)
-        self.rowconfigure(0, weight=1)
+        #self.rowconfigure(0, weight=1)
         self.configure(background='beige')
         self.columnconfigure(0, weight=1)
         self.title_frame.configure(background='beige')
@@ -58,6 +60,9 @@ class MagicEditWizard(Toplevel):
         print(self.selected_lessons)
         self.to_edit_lesson = self.selected_lessons[0]
         Data_Flow_Edit.LESSON_ID = int(self.to_edit_lesson)
+        self.imageroot = Data_Flow_Edit.file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(self.to_edit_lesson) + os.path.sep + "images"
+        self.videoroot = Data_Flow_Edit.file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(self.to_edit_lesson) + os.path.sep + "videos"
+
         self.lesson_dict = Data_Flow_Edit.select_lesson_data(int(self.to_edit_lesson))
         print(self.lesson_dict)
         self.create_title_edit_page(8)
@@ -121,14 +126,7 @@ class MagicEditWizard(Toplevel):
         self.application_image6_path_full =""
         self.application_image7_path_full =""
         self.application_image8_path_full =""
-        self.step1_label = ttk.Label(self.apply_activity_steps_frame)
-        self.step2_label = ttk.Label(self.apply_activity_steps_frame)
-        self.step3_label = ttk.Label(self.apply_activity_steps_frame)
-        self.step4_label = ttk.Label(self.apply_activity_steps_frame)
-        self.step5_label = ttk.Label(self.apply_activity_steps_frame)
-        self.step6_label = ttk.Label(self.apply_activity_steps_frame)
-        self.step7_label = ttk.Label(self.apply_activity_steps_frame)
-        self.step8_label = ttk.Label(self.apply_activity_steps_frame)
+
 
 
 
@@ -157,7 +155,7 @@ class MagicEditWizard(Toplevel):
         #self.title_video_file_label = ttk.Label(self.title_frame,textvariable=self.video_var,style="Edit.TLabelframe.Label")
         self.image_var = StringVar()
         self.image_var.set(self.lesson_dict[0].get("Title_Image"))
-        self.image_title_preview_path = Data_Flow_Edit.imageroot + os.path.sep + self.image_var.get()
+        self.image_title_preview_path = self.imageroot + os.path.sep + self.image_var.get()
         title_image = Image.open(self.image_title_preview_path)
         title_image.thumbnail((100, 100))
         self.title_image_display_preview = ImageTk.PhotoImage(title_image)
@@ -194,22 +192,22 @@ class MagicEditWizard(Toplevel):
         self.factual_term_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=1: self.add_factual_image(id), style='Green.TButton')
 
-        factual_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.factual_image_var.get())
+        factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image_var.get())
         factual_image.thumbnail((100, 100))
         self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
         self.factual_image_label = ttk.Label(self.factual_frame, image = self.factual_image_display_preview,
                                             background="beige")
 
 
-        self.factual_term_label.grid(row=0, column=0, pady=10)
-        self.factual_term_text.grid(row=0, column=1, pady=10)
+        self.factual_term_label.grid(row=0, column=0, pady=5)
+        self.factual_term_text.grid(row=0, column=1, pady=5)
 
-        self.factual_term_desc_label.grid(row=1, column=0, pady=10)
-        self.factual_term_desc_text.grid(row=1, column=1, pady=10)
+        self.factual_term_desc_label.grid(row=1, column=0, pady=5)
+        self.factual_term_desc_text.grid(row=1, column=1, pady=5)
 
 
-        self.factual_term_image_button.grid(row=3,column=0,pady=10)
-        self.factual_image_label.grid(row=3, column=3, pady=10)
+        self.factual_term_image_button.grid(row=3,column=0,pady=5)
+        self.factual_image_label.grid(row=3, column=3, pady=5)
 
         self.factual_image2_var = StringVar()
         self.factual_text_term2_var = StringVar()
@@ -221,22 +219,22 @@ class MagicEditWizard(Toplevel):
         self.factual_term2_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=2: self.add_factual_image(id), style='Green.TButton')
         self.factual_image2_var.set(self.lesson_dict[0]["Factual_Image2"])
-        factual_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.factual_image2_var.get())
+        factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image2_var.get())
         factual_image.thumbnail((100, 100))
         self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
         self.factual_image_label2 = ttk.Label(self.factual_frame, image =   self.factual_image_display_preview2  ,
                                             background="beige")
-        self.factual_term2_label.grid(row=5, column=0, pady=10)
-        self.factual_term2_text.grid(row=5, column=1, pady=10)
-        self.factual_term2_desc_label.grid(row=6, column=0, pady=10)
+        self.factual_term2_label.grid(row=5, column=0, pady=5)
+        self.factual_term2_text.grid(row=5, column=1, pady=5)
+        self.factual_term2_desc_label.grid(row=6, column=0, pady=5)
 
-        self.factual_term2_desc_text.grid(row=6, column=1, pady=10)
+        self.factual_term2_desc_text.grid(row=6, column=1, pady=5)
         text_insert_desc2 = self.lesson_dict[0]["Factual_Term2_Description"]
         self.factual_term2_desc_text.insert("1.0", text_insert_desc2)
         self.factual_text_term2_var.set(self.lesson_dict[0]["Factual_Term2"])
 
-        self.factual_term2_image_button.grid(row=7, column=0, pady=10)
-        self.factual_image_label2.grid(row=7, column=3, pady=10)
+        self.factual_term2_image_button.grid(row=7, column=0, pady=5)
+        self.factual_image_label2.grid(row=7, column=3, pady=5)
 
         self.factual_image3_var = StringVar()
         self.factual_text_term3_var = StringVar()
@@ -247,22 +245,22 @@ class MagicEditWizard(Toplevel):
         self.factual_term3_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=3: self.add_factual_image(id), style='Green.TButton')
         self.factual_image3_var.set(self.lesson_dict[0]["Factual_Image3"])
-        factual_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.factual_image3_var.get())
+        factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image3_var.get())
         factual_image.thumbnail((100, 100))
         self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
 
         self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
                                               background="beige")
-        self.factual_term3_label.grid(row=9, column=0, pady=10)
-        self.factual_term3_text.grid(row=9, column=1, pady=10)
-        self.factual_term3_desc_label.grid(row=10, column=0, pady=10)
-        self.factual_term3_desc_text.grid(row=10, column=1, pady=10)
+        self.factual_term3_label.grid(row=9, column=0, pady=5)
+        self.factual_term3_text.grid(row=9, column=1, pady=5)
+        self.factual_term3_desc_label.grid(row=10, column=0, pady=5)
+        self.factual_term3_desc_text.grid(row=10, column=1, pady=5)
         text_insert_desc3 = self.lesson_dict[0]["Factual_Term3_Description"]
         self.factual_term3_desc_text.insert("1.0", text_insert_desc3)
         self.factual_text_term3_var.set(self.lesson_dict[0]["Factual_Term3"])
 
-        self.factual_term3_image_button.grid(row=11, column=0, pady=10)
-        self.factual_image_label3.grid(row=11, column=3, pady=10)
+        self.factual_term3_image_button.grid(row=11, column=0, pady=5)
+        self.factual_image_label3.grid(row=11, column=3, pady=5)
         self.index = 2
 
     def create_application_edit_page(self, edit_lesson):
@@ -312,6 +310,15 @@ class MagicEditWizard(Toplevel):
         self.step_text8_var = StringVar()
         self.step_text8_var.set(self.lesson_dict[0]["Application_Step_Description_8"])
 
+        self.step1_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step2_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step3_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step4_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step5_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step6_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step7_label = ttk.Label(self.apply_activity_steps_frame)
+        self.step8_label = ttk.Label(self.apply_activity_steps_frame)
+
         self.step_text1 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text1_var)
         self.step_text2 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text2_var)
         self.step_text3 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text3_var)
@@ -349,17 +356,17 @@ class MagicEditWizard(Toplevel):
         self.step8_image8 = StringVar()
         self.step8_image8.set(self.lesson_dict[0]["Application_Steps_Widget_8"])
         try:
-            apply_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.step1_image1.get())
+            apply_image = Image.open(self.imageroot + os.path.sep + self.step1_image1.get())
             apply_image.thumbnail((100, 100))
             self.apply_image_display_preview1 = ImageTk.PhotoImage(apply_image)
             self.step1_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview1,
                                          background="beige")
         except:
-            print("invlid image")
+            print("invalid image")
 
 
         try:
-            apply_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.step2_image2.get())
+            apply_image = Image.open(self.imageroot + os.path.sep + self.step2_image2.get())
             apply_image.thumbnail((100, 100))
             self.apply_image_display_preview2 = ImageTk.PhotoImage(apply_image)
             self.step2_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview2
@@ -367,45 +374,45 @@ class MagicEditWizard(Toplevel):
         except:
             print("Invalid Image")
         try:
-            apply_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.step3_image3.get())
+            apply_image = Image.open(self.imageroot + os.path.sep + self.step3_image3.get())
             apply_image.thumbnail((100, 100))
             self.apply_image_display_preview3 = ImageTk.PhotoImage(apply_image)
             self.step3_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview3)
 
         except:
-            print("invlid image")
+            print("invalid image")
 
         try:
-            apply_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.step4_image4.get())
+            apply_image = Image.open(self.imageroot + os.path.sep + self.step4_image4.get())
             apply_image.thumbnail((100, 100))
             self.apply_image_display_preview4 = ImageTk.PhotoImage(apply_image)
             self.step4_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview4
                                          )
         except:
-            print("invlid image")
+            print("invalid image")
 
 
         try:
-            apply_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.step5_image5.get())
+            apply_image = Image.open(self.imageroot + os.path.sep + self.step5_image5.get())
             apply_image.thumbnail((100, 100))
             self.apply_image_display_preview5 = ImageTk.PhotoImage(apply_image)
             self.step5_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview5
                                          )
         except:
-            print("invlid image")
+            print("invalid image")
 
         try:
-            apply_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.step6_image6.get())
+            apply_image = Image.open(self.imageroot + os.path.sep + self.step6_image6.get())
             apply_image.thumbnail((100, 100))
             self.apply_image_display_preview6 = ImageTk.PhotoImage(apply_image)
             self.step6_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview6
                                          )
         except:
-            print("invlid image")
+            print("invalid image")
 
         try:
 
-            apply_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.step7_image7.get())
+            apply_image = Image.open(self.imageroot + os.path.sep + self.step7_image7.get())
             apply_image.thumbnail((100, 100))
             self.apply_image_display_preview7 = ImageTk.PhotoImage(apply_image)
             self.step7_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview7,
@@ -413,13 +420,13 @@ class MagicEditWizard(Toplevel):
         except:
             print("invalid image")
         try:
-            apply_image = Image.open(Data_Flow_Edit.imageroot + os.path.sep + self.step8_image8.get())
+            apply_image = Image.open(self.imageroot + os.path.sep + self.step8_image8.get())
             apply_image.thumbnail((100, 100))
             self.apply_image_display_preview8 = ImageTk.PhotoImage(apply_image)
             self.step8_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview8,
                                          )
         except:
-            print("invlid image")
+            print("invalid image")
 
 
         self.htmlvar = StringVar()
@@ -503,7 +510,7 @@ class MagicEditWizard(Toplevel):
 
     def add_title_image(self):
 
-        self.title_image_path_full, title_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+        self.title_image_path_full, title_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
         self.image_var.set(title_image_basename)
         title_image = Image.open(self.title_image_path_full)
         title_image.thumbnail((100, 100))
@@ -518,7 +525,7 @@ class MagicEditWizard(Toplevel):
 
         factual_image = None
         if index == 1:
-            self.factual_image1_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.factual_image1_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image1_path_full)
             factual_image.thumbnail((100, 100))
@@ -526,11 +533,11 @@ class MagicEditWizard(Toplevel):
             self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
             self.factual_image_label = ttk.Label(self.factual_frame, image=self.factual_image_display_preview,
                                                     background="beige")
-            self.factual_image_label.grid(row=3, column=3, padx=20, pady=10)
+            self.factual_image_label.grid(row=3, column=3, padx=20, pady=5)
 
 
         elif index == 2:
-            self.factual_image2_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.factual_image2_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image2_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image2_path_full)
             factual_image.thumbnail((100, 100))
@@ -538,9 +545,9 @@ class MagicEditWizard(Toplevel):
             self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
             self.factual_image_label2 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview2,
                                                  background="beige")
-            self.factual_image_label2.grid(row=7, column=3, padx=20, pady=10)
+            self.factual_image_label2.grid(row=7, column=3, padx=20, pady=5)
         else:
-            self.factual_image3_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.factual_image3_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image3_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image3_path_full)
             factual_image.thumbnail((100, 100))
@@ -548,7 +555,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
             self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
                                                  background="beige")
-            self.factual_image_label3.grid(row=11, column=3, padx=20, pady=10)
+            self.factual_image_label3.grid(row=11, column=3, padx=20, pady=5)
 
 
 
@@ -557,7 +564,7 @@ class MagicEditWizard(Toplevel):
 
 
         if index == 1:
-            self.application_image1_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.application_image1_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step1_image1.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image1_path_full)
@@ -571,7 +578,7 @@ class MagicEditWizard(Toplevel):
                 print("invlid image")
 
         elif index == 2:
-            self.application_image2_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.application_image2_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step2_image2.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image2_path_full)
@@ -584,7 +591,7 @@ class MagicEditWizard(Toplevel):
             except:
                 print("invlid image")
         elif index == 3:
-            self.application_image3_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.application_image3_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step3_image3.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image3_path_full)
@@ -597,7 +604,7 @@ class MagicEditWizard(Toplevel):
             except:
                 print("invlid image")
         elif index == 4:
-            self.application_image4_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.application_image4_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step4_image4.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image4_path_full)
@@ -610,7 +617,7 @@ class MagicEditWizard(Toplevel):
             except:
                 print("invlid image")
         elif index == 5:
-            self.application_image5_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.application_image5_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step5_image5.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image5_path_full)
@@ -623,7 +630,7 @@ class MagicEditWizard(Toplevel):
             except:
                 print("invlid image")
         elif index == 6:
-            self.application_image6_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.application_image6_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step6_image6.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image6_path_full)
@@ -636,7 +643,7 @@ class MagicEditWizard(Toplevel):
             except:
                 print("invlid image")
         elif index == 7:
-            self.application_image7_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.application_image7_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step7_image7.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image7_path_full)
@@ -649,7 +656,7 @@ class MagicEditWizard(Toplevel):
             except:
                 print("invlid image")
         elif index == 8:
-            self.application_image8_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+            self.application_image8_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step8_image8.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image8_path_full)
@@ -664,7 +671,7 @@ class MagicEditWizard(Toplevel):
 
     def add_title_video(self):
 
-        self.filename_vid_title_full, title_video_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root)
+        self.filename_vid_title_full, title_video_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
         self.video_var.set(title_video_basename)
 
 
@@ -821,16 +828,18 @@ class MagicEditWizard(Toplevel):
 
     def previous_page(self):
         self.next_button.config(text='Next')
-        if self.index == 1:
-           
+        if self.index == 2:
+            self.index == 1
             self.factual_frame.grid_forget()
             self.title_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
-        if self.index == 2:
-            self.index = 1
+            return
+        if self.index == 3:
+            self.index = 2
             self.apply_activity_frame.grid_forget()
             self.factual_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
+            return
         if self.index == 4:
-            self.index = 2
+            self.index = 3
             self.ip_frame.grid_forget()
             self.apply_activity_frame.grid(row=0, column=0, pady=50, sticky=tk.NSEW)
 

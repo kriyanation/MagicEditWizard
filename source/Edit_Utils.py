@@ -4,8 +4,8 @@ import os
 
 
 
-def add_file(fileroot):
-    filename_img_title_full = filedialog.askopenfilename(initialdir=fileroot,title='Select Image')
+def add_file(fileroot,self):
+    filename_img_title_full = filedialog.askopenfilename(initialdir=fileroot,title='Select Image',parent=self)
     filename_img_title = os.path.basename(filename_img_title_full)
     print(filename_img_title)
     return filename_img_title_full, filename_img_title
