@@ -2,13 +2,16 @@ import os
 import sqlite3
 import sys
 import traceback
+from logging.handlers import RotatingFileHandler
 from tkinter import messagebox
+import logging
 
 import assessment_generate
 from snapshot_view import SnapshotView
 
 LESSON_ID = 5
 
+logger = logging.getLogger("MagicLogger")
 
 
 file_root = os.path.abspath(os.path.join(os.getcwd(), ".."))
@@ -36,6 +39,7 @@ def get_Lessons():
     return list_lessons
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
+     logger.info(traceback.print_exc())
      sys.exit()
 
 def select_lesson_data(lessonid):
@@ -50,7 +54,7 @@ def select_lesson_data(lessonid):
         return lesson_dict
     except sqlite3.OperationalError:
         messagebox.showerror("Database Issue", "Issue with database connection")
-
+        logger.info(traceback.print_exc())
 
 def save_all_data(data_collector,lesson_file_manager):
     connection = sqlite3.connect(db)
@@ -70,23 +74,24 @@ def save_all_data(data_collector,lesson_file_manager):
     except (sqlite3.OperationalError ):
         messagebox.showerror("Error Connecting to DB", "Saving the Information met with an error")
         connection.set_trace_callback(print)
-        traceback.print_exc()
+        logger.info(traceback.print_exc())
 
     try:
          snapshot = SnapshotView(None,LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"notes_"+str(LESSON_ID)+".pdf")
     except:
         messagebox.showerror("Notes Generation","There was an error during notes generation")
-        traceback.print_exc()
+        logger.info(traceback.print_exc())
     try:
         assessment = assessment_generate.generate_ip_paper(LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"ip_"+str(LESSON_ID)+".pdf",db)
     except:
         messagebox.showerror("Assessment Generation", "There was an error during assessments/points generation")
-        traceback.print_exc()
+        logger.info(traceback.print_exc())
 
 
     else:
         messagebox.showinfo("Content Created",
                             "Content created for you to view in the interactive player. \n Notes and Assessments modifield")
-
+        logger.info("Lesson Record Modified")
+        sys.exit()
 #get_Title()
 
