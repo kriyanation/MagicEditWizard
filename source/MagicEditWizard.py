@@ -183,7 +183,7 @@ class MagicEditWizard(Toplevel):
         self.factual_text_term1_var = StringVar()
         self.factual_term_label = ttk.Label(self.factual_frame, text="Definition or New Term", style='Edit.TLabelframe.Label')
         self.factual_term_text = ttk.Entry(self.factual_frame,textvariable=self.factual_text_term1_var)
-        self.factual_term_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=5)
+        self.factual_term_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=4)
         text_insert_desc1 = self.lesson_dict[0]["Factual_Term1_Description"]
         self.factual_term_desc_text.insert("1.0",text_insert_desc1)
         self.factual_text_term1_var.set(self.lesson_dict[0]["Factual_Term1"])
@@ -214,7 +214,7 @@ class MagicEditWizard(Toplevel):
 
         self.factual_term2_label = ttk.Label(self.factual_frame, text="Definition or New Term", style='Edit.TLabelframe.Label')
         self.factual_term2_text = ttk.Entry(self.factual_frame,textvariable=self.factual_text_term2_var)
-        self.factual_term2_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=5)
+        self.factual_term2_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=4)
         self.factual_term2_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term2_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=2: self.add_factual_image(id), style='Green.TButton')
@@ -240,7 +240,7 @@ class MagicEditWizard(Toplevel):
         self.factual_text_term3_var = StringVar()
         self.factual_term3_label = ttk.Label(self.factual_frame, text="Definition or New Term", style='Edit.TLabelframe.Label')
         self.factual_term3_text = ttk.Entry(self.factual_frame,textvariable=self.factual_text_term3_var)
-        self.factual_term3_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=5)
+        self.factual_term3_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=4)
         self.factual_term3_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term3_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=3: self.add_factual_image(id), style='Green.TButton')
