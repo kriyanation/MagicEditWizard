@@ -47,10 +47,10 @@ class MagicEditWizard(Toplevel):
 
         s.configure('Firebrick.Label', background='beige', foreground='dark blue', font=('courier', 9, 'bold'))
 
-        s.configure('Green.TButton', background='firebrick', foreground='snow')
+        s.configure('Firebrick.TButton', background='firebrick', foreground='snow')
         s.configure('Green.TMenubutton', background='peachpuff2', foreground='firebrick')
         s.configure('Horizontal.Green.TScale', background='firebrick', foreground='snow')
-        s.map('Green.TButton', background=[('active', '!disabled', 'maroon'), ('pressed', 'snow')],
+        s.map('Firebrick.TButton', background=[('active', '!disabled', 'maroon'), ('pressed', 'snow')],
               foreground=[('pressed', 'snow'), ('active', 'snow')])
 
         app = LessonList.MagicLessonList(bg='dark slate gray', fg='white', buttonbg='dark olive green',
@@ -67,8 +67,8 @@ class MagicEditWizard(Toplevel):
         print(self.lesson_dict)
         self.create_title_edit_page(8)
         bottom_frame = tk.Frame(self, background="beige")
-        self.next_button = ttk.Button(bottom_frame, text='Next', command=self.next_page, style='Green.TButton')
-        self.back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Green.TButton')
+        self.next_button = ttk.Button(bottom_frame, text='Next', command=self.next_page, style='Firebrick.TButton')
+        self.back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Firebrick.TButton')
         self.back_button.grid(row=0,column=0,padx=10)
         self.next_button.grid(row=0, column=1)
         bottom_frame.grid(sticky=tk.S)
@@ -141,9 +141,9 @@ class MagicEditWizard(Toplevel):
         self.title_text = tk.Entry(self.title_frame,textvariable=self.title_text_var)
 
         self.title_image_label = ttk.Label(self.title_frame, text="Image Related to Title", style='Edit.TLabelframe.Label')
-        self.title_image_button = ttk.Button(self.title_frame, text="Add Image", command=self.add_title_image, style='Green.TButton')
+        self.title_image_button = ttk.Button(self.title_frame, text="Add Image", command=self.add_title_image, style='Firebrick.TButton')
         self.title_image_video_label = ttk.Label(self.title_frame, text="Video Related to Title", style='Edit.TLabelframe.Label')
-        self.title_video_button = ttk.Button(self.title_frame, text="Add Video", command=self.add_title_video, style='Green.TButton')
+        self.title_video_button = ttk.Button(self.title_frame, text="Add Video", command=self.add_title_video, style='Firebrick.TButton')
 
         self.title_running_notes_label = ttk.Label(self.title_frame, text="Topic Introduction\n(2 to 3 lines)", style='Edit.TLabelframe.Label')
         self.running_notes = self.lesson_dict[0].get("Title_Running_Notes")
@@ -190,7 +190,7 @@ class MagicEditWizard(Toplevel):
         self.factual_image_var.set(self.lesson_dict[0]["Factual_Image1"])
         self.factual_term_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term_image_button = ttk.Button(self.factual_frame, text='Add Image',
-                                               command=lambda id=1: self.add_factual_image(id), style='Green.TButton')
+                                               command=lambda id=1: self.add_factual_image(id), style='Firebrick.TButton')
 
         factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image_var.get())
         factual_image.thumbnail((80, 80))
@@ -217,7 +217,7 @@ class MagicEditWizard(Toplevel):
         self.factual_term2_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=4)
         self.factual_term2_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term2_image_button = ttk.Button(self.factual_frame, text='Add Image',
-                                               command=lambda id=2: self.add_factual_image(id), style='Green.TButton')
+                                               command=lambda id=2: self.add_factual_image(id), style='Firebrick.TButton')
         self.factual_image2_var.set(self.lesson_dict[0]["Factual_Image2"])
         factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image2_var.get())
         factual_image.thumbnail((80, 80))
@@ -243,7 +243,7 @@ class MagicEditWizard(Toplevel):
         self.factual_term3_desc_text = tk.Text(self.factual_frame, wrap=tk.WORD, width=30, height=4)
         self.factual_term3_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term3_image_button = ttk.Button(self.factual_frame, text='Add Image',
-                                               command=lambda id=3: self.add_factual_image(id), style='Green.TButton')
+                                               command=lambda id=3: self.add_factual_image(id), style='Firebrick.TButton')
         self.factual_image3_var.set(self.lesson_dict[0]["Factual_Image3"])
         factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image3_var.get())
         factual_image.thumbnail((80, 80))
@@ -327,14 +327,14 @@ class MagicEditWizard(Toplevel):
         self.step_text6 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text6_var)
         self.step_text7 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text7_var)
         self.step_text8 = ttk.Entry(self.apply_activity_steps_frame,textvariable=self.step_text8_var)
-        self.step_image_button1 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=1: self.add_application_image(id), text='Add Image', style='Green.TButton')
-        self.step_image_button2 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=2: self.add_application_image(id), text='Add Image', style='Green.TButton')
-        self.step_image_button3 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=3: self.add_application_image(id), text='Add Image', style='Green.TButton')
-        self.step_image_button4 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=4: self.add_application_image(id), text='Add Image', style='Green.TButton')
-        self.step_image_button5 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=5: self.add_application_image(id), text='Add Image', style='Green.TButton')
-        self.step_image_button6 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=6: self.add_application_image(id), text='Add Image', style='Green.TButton')
-        self.step_image_button7 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=7: self.add_application_image(id), text='Add Image', style='Green.TButton')
-        self.step_image_button8 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=8: self.add_application_image(id), text='Add Image', style='Green.TButton')
+        self.step_image_button1 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=1: self.add_application_image(id), text='Add Image', style='Firebrick.TButton')
+        self.step_image_button2 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=2: self.add_application_image(id), text='Add Image', style='Firebrick.TButton')
+        self.step_image_button3 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=3: self.add_application_image(id), text='Add Image', style='Firebrick.TButton')
+        self.step_image_button4 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=4: self.add_application_image(id), text='Add Image', style='Firebrick.TButton')
+        self.step_image_button5 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=5: self.add_application_image(id), text='Add Image', style='Firebrick.TButton')
+        self.step_image_button6 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=6: self.add_application_image(id), text='Add Image', style='Firebrick.TButton')
+        self.step_image_button7 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=7: self.add_application_image(id), text='Add Image', style='Firebrick.TButton')
+        self.step_image_button8 = ttk.Button(self.apply_activity_steps_frame, command=lambda id=8: self.add_application_image(id), text='Add Image', style='Firebrick.TButton')
 
 
 
