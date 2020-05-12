@@ -54,7 +54,7 @@ def select_lesson_data(lessonid):
         messagebox.showerror("Database Issue", "Issue with database connection")
         logger.info(traceback.print_exc())
 
-def save_all_data(data_collector,lesson_file_manager):
+def save_all_data(data_collector,lesson_file_manager,self):
     connection = sqlite3.connect(db)
     try:
         print(data_collector)
@@ -75,20 +75,21 @@ def save_all_data(data_collector,lesson_file_manager):
         logger.info(traceback.print_exc())
 
     try:
-         snapshot = SnapshotView(None,LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"notes_"+str(LESSON_ID)+".pdf")
+
+        snapshot = SnapshotView(self,LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"notes_"+str(LESSON_ID)+".pdf")
     except:
         messagebox.showerror("Notes Generation","There was an error during notes generation")
         logger.info(traceback.print_exc())
     try:
         assessment = assessment_generate.generate_ip_paper(LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"ip_"+str(LESSON_ID)+".pdf",db)
     except:
-        messagebox.showerror("Assessment Generation", "There was an error during assessments/points generation")
+        messagebox.showerror("Assessment Generation", "There was an error during assessments/points generation",parent=self)
         logger.info(traceback.print_exc())
 
 
     else:
         messagebox.showinfo("Content Created",
-                            "Content created for you to view in the interactive player. \n Notes and Assessments modifield")
+                            "Content created for you to view in the interactive player. \n Notes and Assessments modifield",parent=self)
         logger.info("Lesson Record Modified")
 
 #get_Title()

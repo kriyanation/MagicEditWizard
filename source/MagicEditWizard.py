@@ -193,17 +193,17 @@ class MagicEditWizard(Toplevel):
                                                command=lambda id=1: self.add_factual_image(id), style='Green.TButton')
 
         factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image_var.get())
-        factual_image.thumbnail((100, 100))
+        factual_image.thumbnail((80, 80))
         self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
         self.factual_image_label = ttk.Label(self.factual_frame, image = self.factual_image_display_preview,
                                             background="beige")
 
 
-        self.factual_term_label.grid(row=0, column=0, pady=5)
-        self.factual_term_text.grid(row=0, column=1, pady=5)
+        self.factual_term_label.grid(row=0, column=0, pady=3)
+        self.factual_term_text.grid(row=0, column=1, pady=3)
 
-        self.factual_term_desc_label.grid(row=1, column=0, pady=5)
-        self.factual_term_desc_text.grid(row=1, column=1, pady=5)
+        self.factual_term_desc_label.grid(row=1, column=0, pady=3)
+        self.factual_term_desc_text.grid(row=1, column=1, pady=3)
 
 
         self.factual_term_image_button.grid(row=3,column=0,pady=5)
@@ -220,7 +220,7 @@ class MagicEditWizard(Toplevel):
                                                command=lambda id=2: self.add_factual_image(id), style='Green.TButton')
         self.factual_image2_var.set(self.lesson_dict[0]["Factual_Image2"])
         factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image2_var.get())
-        factual_image.thumbnail((100, 100))
+        factual_image.thumbnail((80, 80))
         self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
         self.factual_image_label2 = ttk.Label(self.factual_frame, image =   self.factual_image_display_preview2  ,
                                             background="beige")
@@ -246,7 +246,7 @@ class MagicEditWizard(Toplevel):
                                                command=lambda id=3: self.add_factual_image(id), style='Green.TButton')
         self.factual_image3_var.set(self.lesson_dict[0]["Factual_Image3"])
         factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image3_var.get())
-        factual_image.thumbnail((100, 100))
+        factual_image.thumbnail((80, 80))
         self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
 
         self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
@@ -528,7 +528,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image1_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image1_path_full)
-            factual_image.thumbnail((100, 100))
+            factual_image.thumbnail((80, 80))
             self.factual_image_label.grid_forget()
             self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
             self.factual_image_label = ttk.Label(self.factual_frame, image=self.factual_image_display_preview,
@@ -540,7 +540,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image2_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image2_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image2_path_full)
-            factual_image.thumbnail((100, 100))
+            factual_image.thumbnail((80, 80))
             self.factual_image_label2.grid_forget()
             self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
             self.factual_image_label2 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview2,
@@ -550,7 +550,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image3_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image3_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image3_path_full)
-            factual_image.thumbnail((100, 100))
+            factual_image.thumbnail((80, 80))
             self.factual_image_label3.grid_forget()
             self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
             self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
@@ -728,7 +728,7 @@ class MagicEditWizard(Toplevel):
         if (self.application_image8_path_full != ""):
             lesson_file_manager.add_image_file(self.application_image8_path_full)
 
-        Data_Flow_Edit.save_all_data(self.data_collector, lesson_file_manager)
+        Data_Flow_Edit.save_all_data(self.data_collector, lesson_file_manager,self)
 
 
 
@@ -802,7 +802,7 @@ class MagicEditWizard(Toplevel):
             self.title_frame.grid_forget()
             self.process_save(self.index)
             self.create_factual_edit_page(self.to_edit_lesson)
-            self.factual_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
+            self.factual_frame.grid(row=0,column=0,pady=20,sticky=tk.NSEW)
 
             return
         if (self.index == 2):
@@ -820,23 +820,23 @@ class MagicEditWizard(Toplevel):
             self.ip_frame.grid(row=0, column=0, pady=50, sticky=tk.NSEW)
             return
         if (self.index == 4):
-            self.ip_frame.grid_forget()
+            #self.ip_frame.grid_forget()
             self.process_save(self.index)
             self.save_data()
-            self.parent.destroy()
+            #self.parent.destroy()
 
 
     def previous_page(self):
         self.next_button.config(text='Next')
         if self.index == 2:
-            self.index == 1
+            self.index = 1
             self.factual_frame.grid_forget()
             self.title_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
             return
         if self.index == 3:
             self.index = 2
             self.apply_activity_frame.grid_forget()
-            self.factual_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
+            self.factual_frame.grid(row=0,column=0,pady=20,sticky=tk.NSEW)
             return
         if self.index == 4:
             self.index = 3
