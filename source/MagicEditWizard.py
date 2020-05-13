@@ -784,6 +784,8 @@ class MagicEditWizard(Toplevel):
                 final_step_index += 1
             self.data_collector["Apply_External_Link"] = self.htmlvar.get()
         if index == 4:
+            text_notes = self.create_question_text.get("1.0", tk.END)
+            #self.data_collector["IP_Questions"]=self.add_new_lines(text_notes,70)
             self.data_collector["IP_Questions"] = self.create_question_text.get("1.0",tk.END)
 
             self.data_collector["Lesson_Type"] = ""
@@ -794,6 +796,12 @@ class MagicEditWizard(Toplevel):
             self.data_collector['Application_Video_Link'] = ""
             self.data_collector['Application_Video_Running_Notes'] = ""
             self.data_collector['NumberOfQuestions'] = ""
+
+    def add_new_lines(self,text_notes,wrap_length):
+        string_list = []
+        for i in range(0,len(text_notes),wrap_length):
+            string_list.append(text_notes[i:i+wrap_length])
+        return '\n'.join(string_list)
 
 
 
