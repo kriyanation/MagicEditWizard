@@ -357,7 +357,7 @@ class MagicEditWizard(Toplevel):
         self.step8_image8.set(self.lesson_dict[0]["Application_Steps_Widget_8"])
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step1_image1.get())
-            apply_image.thumbnail((100, 100))
+            apply_image.thumbnail((60, 60))
             self.apply_image_display_preview1 = ImageTk.PhotoImage(apply_image)
             self.step1_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview1,
                                          background="beige")
@@ -367,7 +367,7 @@ class MagicEditWizard(Toplevel):
 
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step2_image2.get())
-            apply_image.thumbnail((100, 100))
+            apply_image.thumbnail((60, 60))
             self.apply_image_display_preview2 = ImageTk.PhotoImage(apply_image)
             self.step2_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview2
                                          )
@@ -375,7 +375,7 @@ class MagicEditWizard(Toplevel):
             print("Invalid Image")
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step3_image3.get())
-            apply_image.thumbnail((100, 100))
+            apply_image.thumbnail((60, 60))
             self.apply_image_display_preview3 = ImageTk.PhotoImage(apply_image)
             self.step3_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview3)
 
@@ -384,7 +384,7 @@ class MagicEditWizard(Toplevel):
 
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step4_image4.get())
-            apply_image.thumbnail((100, 100))
+            apply_image.thumbnail((60, 60))
             self.apply_image_display_preview4 = ImageTk.PhotoImage(apply_image)
             self.step4_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview4
                                          )
@@ -394,7 +394,7 @@ class MagicEditWizard(Toplevel):
 
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step5_image5.get())
-            apply_image.thumbnail((100, 100))
+            apply_image.thumbnail((60, 60))
             self.apply_image_display_preview5 = ImageTk.PhotoImage(apply_image)
             self.step5_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview5
                                          )
@@ -403,7 +403,7 @@ class MagicEditWizard(Toplevel):
 
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step6_image6.get())
-            apply_image.thumbnail((100, 100))
+            apply_image.thumbnail((60, 60))
             self.apply_image_display_preview6 = ImageTk.PhotoImage(apply_image)
             self.step6_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview6
                                          )
@@ -413,7 +413,7 @@ class MagicEditWizard(Toplevel):
         try:
 
             apply_image = Image.open(self.imageroot + os.path.sep + self.step7_image7.get())
-            apply_image.thumbnail((100, 100))
+            apply_image.thumbnail((60, 60))
             self.apply_image_display_preview7 = ImageTk.PhotoImage(apply_image)
             self.step7_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview7,
                                          )
@@ -421,7 +421,7 @@ class MagicEditWizard(Toplevel):
             print("invalid image")
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step8_image8.get())
-            apply_image.thumbnail((100, 100))
+            apply_image.thumbnail((60, 60))
             self.apply_image_display_preview8 = ImageTk.PhotoImage(apply_image)
             self.step8_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview8,
                                          )
@@ -568,7 +568,7 @@ class MagicEditWizard(Toplevel):
             self.step1_image1.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image1_path_full)
-                apply_image.thumbnail((100, 100))
+                apply_image.thumbnail((60, 60))
                 self.apply_image_display_preview1 = ImageTk.PhotoImage(apply_image)
                 self.step1_label.grid_forget()
                 self.step1_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview1,
@@ -582,7 +582,7 @@ class MagicEditWizard(Toplevel):
             self.step2_image2.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image2_path_full)
-                apply_image.thumbnail((100, 100))
+                apply_image.thumbnail((60, 60))
                 self.apply_image_display_preview2 = ImageTk.PhotoImage(apply_image)
                 self.step2_label.grid_forget()
                 self.step2_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview2,
@@ -595,7 +595,7 @@ class MagicEditWizard(Toplevel):
             self.step3_image3.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image3_path_full)
-                apply_image.thumbnail((100, 100))
+                apply_image.thumbnail((60, 60))
                 self.apply_image_display_preview3 = ImageTk.PhotoImage(apply_image)
                 self.step3_label.grid_forget()
                 self.step3_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview3,
@@ -608,7 +608,7 @@ class MagicEditWizard(Toplevel):
             self.step4_image4.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image4_path_full)
-                apply_image.thumbnail((100, 100))
+                apply_image.thumbnail((60, 60))
                 self.apply_image_display_preview4 = ImageTk.PhotoImage(apply_image)
                 self.step4_label.grid_forget()
                 self.step4_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview4,
@@ -621,7 +621,7 @@ class MagicEditWizard(Toplevel):
             self.step5_image5.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image5_path_full)
-                apply_image.thumbnail((100, 100))
+                apply_image.thumbnail((60, 60))
                 self.apply_image_display_preview5 = ImageTk.PhotoImage(apply_image)
                 self.step5_label.grid_forget()
                 self.step5_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview5,
@@ -634,7 +634,7 @@ class MagicEditWizard(Toplevel):
             self.step6_image6.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image6_path_full)
-                apply_image.thumbnail((100, 100))
+                apply_image.thumbnail((60, 60))
                 self.apply_image_display_preview6 = ImageTk.PhotoImage(apply_image)
                 self.step6_label.grid_forget()
                 self.step6_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview6,
@@ -647,7 +647,7 @@ class MagicEditWizard(Toplevel):
             self.step7_image7.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image7_path_full)
-                apply_image.thumbnail((100, 100))
+                apply_image.thumbnail((60, 60))
                 self.apply_image_display_preview7 = ImageTk.PhotoImage(apply_image)
                 self.step7_label.grid_forget()
                 self.step7_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview7,
@@ -660,7 +660,7 @@ class MagicEditWizard(Toplevel):
             self.step8_image8.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image8_path_full)
-                apply_image.thumbnail((100, 100))
+                apply_image.thumbnail((60, 60))
                 self.apply_image_display_preview8 = ImageTk.PhotoImage(apply_image)
                 self.step8_label.grid_forget()
                 self.step8_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview8,
