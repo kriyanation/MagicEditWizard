@@ -279,6 +279,7 @@ class MagicEditWizard(Toplevel):
 
         self.number_of_steps = self.lesson_dict[0]['Application_Steps_Number']
         self.configure_steps(self.number_of_steps)
+        self.index += 1
 
 
 
@@ -495,7 +496,7 @@ class MagicEditWizard(Toplevel):
         self.link_label.grid(row=steps, column=0, pady=50)
         self.html_link.grid(row=steps, column=1, pady=50, padx=20)
         self.apply_activity_steps_frame.grid(row=1,column=0,columnspan=2)
-        self.index += 1
+
     def create_ip_edit_page(self, edit_lesson):
         self.create_question_Label = ttk.Label(self.ip_frame, text='Add your questions here', wraplength=300,
                                           style='Edit.TLabelframe.Label')
