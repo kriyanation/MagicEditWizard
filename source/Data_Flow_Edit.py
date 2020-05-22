@@ -37,8 +37,8 @@ def get_Lessons():
     return list_lessons
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     logger.info(traceback.print_exc())
-     sys.exit()
+     logger.exception("get_lessons() met with an error")
+
 
 def select_lesson_data(lessonid):
     try:
@@ -52,7 +52,7 @@ def select_lesson_data(lessonid):
         return lesson_dict
     except sqlite3.OperationalError:
         messagebox.showerror("Database Issue", "Issue with database connection")
-        logger.info(traceback.print_exc())
+        logger.exception("Select Lesson Data met with an error")
 
 def save_all_data(data_collector,lesson_file_manager,self):
     connection = sqlite3.connect(db)
@@ -72,25 +72,27 @@ def save_all_data(data_collector,lesson_file_manager,self):
     except (sqlite3.OperationalError ):
         messagebox.showerror("Error Connecting to DB", "Saving the Information met with an error")
         connection.set_trace_callback(print)
-        logger.info(traceback.print_exc())
+        logger.exception("Saving data met with an error")
 
     try:
 
         snapshot = SnapshotView(self,LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"notes_"+str(LESSON_ID)+".pdf")
     except:
         messagebox.showerror("Notes Generation","There was an error during notes generation")
-        logger.info(traceback.print_exc())
+        logger.exception("Notes generation met with an error")
     try:
         assessment = assessment_generate.generate_ip_paper(LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"ip_"+str(LESSON_ID)+".pdf",db)
     except:
         messagebox.showerror("Assessment Generation", "There was an error during assessments/points generation",parent=self)
-        logger.info(traceback.print_exc())
+        logger.exception("Assessment generation met with an error")
 
 
     else:
         messagebox.showinfo("Content Created",
-                            "Content created for you to view in the interactive player. \n Notes and Assessments modifield",parent=self)
+                            "Content created for you to view in the interactive player. \nNotes and Assessments modifield\n"
+                            "This window shall close now",parent=self)
         logger.info("Lesson Record Modified")
+        self.destroy()
 
 #get_Title()
 

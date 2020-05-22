@@ -733,6 +733,7 @@ class MagicEditWizard(Toplevel):
 
 
 
+
     def process_save(self,index):
         if index == 1:
             self.data_collector["Lesson_Title"]=self.title_text_var.get()
