@@ -15,7 +15,7 @@ class MagicEditWizard(Toplevel):
 
         super().__init__(*args, **kwargs)
         logger.info("Entering Edit Wizard Initialize")
-        self.base_frame = tk.Frame(self, background="beige")
+        self.base_frame = tk.Frame(self, background="gray25")
 
         #self.base_frame.rowconfigure(0, weight=1)
         self.base_frame.columnconfigure(0, weight=1)
@@ -29,33 +29,31 @@ class MagicEditWizard(Toplevel):
         self.apply_activity_steps_frame = Frame(self.apply_activity_frame)
         self.ip_frame = Frame(self.base_frame)
         #self.rowconfigure(0, weight=1)
-        self.configure(background='beige')
+        self.configure(background='gray25')
         self.columnconfigure(0, weight=1)
-        self.title_frame.configure(background='beige')
-        self.factual_frame.configure(background='beige')
-        self.apply_activity_frame.configure(background='beige')
-        self.ip_frame.configure(background='beige')
-        self.apply_activity_steps_frame.configure(background='beige')
+        self.title_frame.configure(background='gray25')
+        self.factual_frame.configure(background='gray25')
+        self.apply_activity_frame.configure(background='gray25')
+        self.ip_frame.configure(background='gray25')
+        self.apply_activity_steps_frame.configure(background='gray25')
         self.data_collector = {}
         s  = ttk.Style()
         self.bind("<Configure>",self.resize)
         s.theme_use('clam')
 
-        s.configure('Edit.TLabelframe', background='beige')
-        s.configure('Edit.TLabelframe.Label', font=('courier', 14, 'bold', 'italic'))
-        s.configure('Edit.TLabelframe.Label', background='beige', foreground='brown')
+        s.configure('Edit.TLabelframe', background='gray27')
+        s.configure('Edit.TLabelframe.Label', font=('helvetica', 14, 'bold'))
+        s.configure('Edit.TLabelframe.Label', background='gray27', foreground='white')
 
-        s.configure('Firebrick.Label', background='beige', foreground='dark blue', font=('courier', 9, 'bold'))
+        s.configure('Firebrick.Label',background='gray27',foreground='white',font=('helvetica', 9, 'bold'))
 
-        s.configure('Firebrick.TButton', background='firebrick', foreground='snow')
-        s.configure('Green.TMenubutton', background='peachpuff2', foreground='firebrick')
-        s.configure('Horizontal.Green.TScale', background='firebrick', foreground='snow')
-        s.map('Firebrick.TButton', background=[('active', '!disabled', 'maroon'), ('pressed', 'snow')],
-              foreground=[('pressed', 'snow'), ('active', 'snow')])
+        s.configure('Firebrick.TButton', background='steel blue', foreground='white',font=('helvetica', 12, 'bold'))
+        s.configure('Green.TMenubutton', background='gray27', foreground='gray55')
+        s.map('Firebrick.TButton',background=[('active', '!disabled', 'dark turquoise'), ('pressed', 'white')],
+              foreground=[('pressed', 'white'), ('active', 'white')])
 
-        app = LessonList.MagicLessonList(bg='dark slate gray', fg='white', buttonbg='dark olive green',
-                                       selectmode=tk.SINGLE,
-                                        buttonfg='snow', parent=self)
+        app = LessonList.MagicLessonList(parent=self)
+        app.geometry("380x680+100+100")
         self.wait_window(app)
         print(self.selected_lessons)
         self.to_edit_lesson = self.selected_lessons[0]
@@ -66,7 +64,7 @@ class MagicEditWizard(Toplevel):
         self.lesson_dict = Data_Flow_Edit.select_lesson_data(int(self.to_edit_lesson))
         print(self.lesson_dict)
         self.create_title_edit_page(8)
-        bottom_frame = tk.Frame(self, background="beige")
+        bottom_frame = tk.Frame(self, background="gray25")
         self.next_button = ttk.Button(bottom_frame, text='Next', command=self.next_page, style='Firebrick.TButton')
         self.back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Firebrick.TButton')
         self.back_button.grid(row=0,column=0,padx=10)
@@ -159,21 +157,21 @@ class MagicEditWizard(Toplevel):
         title_image = Image.open(self.image_title_preview_path)
         title_image.thumbnail((100, 100))
         self.title_image_display_preview = ImageTk.PhotoImage(title_image)
-        self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,background="beige")
+        self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,background="gray27")
         self.title_url_label = ttk.Label(self.title_frame, text="(OR) youtube URL", style='Edit.TLabelframe.Label')
         self.title_video_url = ttk.Entry(self.title_frame,textvariable = self.video_var )
 
-        self.title_label.grid(row=0,column=0,padx=20,pady=10)
-        self.title_text.grid(row=0,column=1,padx=20,pady=10)
-        self.title_image_label.grid(row=1,column=0,padx=20,pady=10)
-        self.title_image_button.grid(row=1,column=1,padx=20,pady=10)
-        self.title_image_video_label.grid(row=2,column=0,padx=20,pady=10)
-        self.title_video_button.grid(row=2,column=1,padx=20,pady=10)
-        self.title_url_label.grid(row=2, column=2, pady=2)
-        self.title_video_url.grid(row=2, column=3, pady=2, padx=5)
-        self.title_running_notes_label.grid(row=3,column=0,padx=20,pady=10)
-        self.title_running_notes.grid(row=3,column=1,padx=20,pady=10)
-        self.title_image_file_label.grid(row=1, column=3,pady=10)
+        self.title_label.grid(row=0,column=0,padx=20,pady=10,sticky=tk.W)
+        self.title_text.grid(row=0,column=1,padx=20,pady=10,sticky=tk.W)
+        self.title_image_label.grid(row=1,column=0,padx=20,pady=10,sticky=tk.W)
+        self.title_image_button.grid(row=1,column=1,padx=20,pady=10,sticky=tk.W)
+        self.title_image_video_label.grid(row=2,column=0,padx=20,pady=10,sticky=tk.W)
+        self.title_video_button.grid(row=2,column=1,padx=20,pady=10,sticky=tk.W)
+        self.title_url_label.grid(row=2, column=2, pady=2,sticky=tk.W)
+        self.title_video_url.grid(row=2, column=3, pady=2, padx=5,sticky=tk.W)
+        self.title_running_notes_label.grid(row=3,column=0,padx=20,pady=10,sticky=tk.W)
+        self.title_running_notes.grid(row=3,column=1,columnspan=2,padx=20,pady=10,sticky=tk.W)
+        self.title_image_file_label.grid(row=1, column=3,pady=10,sticky=tk.W)
        # self.title_video_file_label.grid(row=2, column=3,pady=10)
         self.title_frame.grid(row=0,column=0,pady=50,sticky=tk.NSEW)
         self.index += 1
@@ -196,18 +194,18 @@ class MagicEditWizard(Toplevel):
         factual_image.thumbnail((80, 80))
         self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
         self.factual_image_label = ttk.Label(self.factual_frame, image = self.factual_image_display_preview,
-                                            background="beige")
+                                            background="gray27")
 
 
-        self.factual_term_label.grid(row=0, column=0, pady=3)
-        self.factual_term_text.grid(row=0, column=1, pady=3)
+        self.factual_term_label.grid(row=0, column=0, pady=3,sticky=tk.W)
+        self.factual_term_text.grid(row=0, column=1,padx=5, pady=3,sticky=tk.W)
 
-        self.factual_term_desc_label.grid(row=1, column=0, pady=3)
-        self.factual_term_desc_text.grid(row=1, column=1, pady=3)
+        self.factual_term_desc_label.grid(row=1, column=0, pady=3,sticky=tk.W)
+        self.factual_term_desc_text.grid(row=1, column=1,columnspan=2,padx=5, pady=3,sticky=tk.W)
 
 
-        self.factual_term_image_button.grid(row=3,column=0,pady=5)
-        self.factual_image_label.grid(row=3, column=3, pady=5)
+        self.factual_term_image_button.grid(row=3,column=0,pady=5,sticky=tk.W)
+        self.factual_image_label.grid(row=3, column=1,padx=5, pady=5,sticky=tk.W)
 
         self.factual_image2_var = StringVar()
         self.factual_text_term2_var = StringVar()
@@ -223,18 +221,18 @@ class MagicEditWizard(Toplevel):
         factual_image.thumbnail((80, 80))
         self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
         self.factual_image_label2 = ttk.Label(self.factual_frame, image =   self.factual_image_display_preview2  ,
-                                            background="beige")
-        self.factual_term2_label.grid(row=5, column=0, pady=5)
-        self.factual_term2_text.grid(row=5, column=1, pady=5)
-        self.factual_term2_desc_label.grid(row=6, column=0, pady=5)
+                                            background="gray27")
+        self.factual_term2_label.grid(row=5, column=0, pady=5,sticky=tk.W)
+        self.factual_term2_text.grid(row=5, column=1, padx=5,pady=5,sticky=tk.W)
+        self.factual_term2_desc_label.grid(row=6, column=0, pady=5,sticky=tk.W)
 
-        self.factual_term2_desc_text.grid(row=6, column=1, pady=5)
+        self.factual_term2_desc_text.grid(row=6, column=1,padx=5, pady=5,columnspan=2,sticky=tk.W)
         text_insert_desc2 = self.lesson_dict[0]["Factual_Term2_Description"]
         self.factual_term2_desc_text.insert("1.0", text_insert_desc2)
         self.factual_text_term2_var.set(self.lesson_dict[0]["Factual_Term2"])
 
-        self.factual_term2_image_button.grid(row=7, column=0, pady=5)
-        self.factual_image_label2.grid(row=7, column=3, pady=5)
+        self.factual_term2_image_button.grid(row=7, column=0, pady=5,sticky=tk.W)
+        self.factual_image_label2.grid(row=7, column=1,padx=5, pady=5,sticky=tk.W)
 
         self.factual_image3_var = StringVar()
         self.factual_text_term3_var = StringVar()
@@ -250,17 +248,17 @@ class MagicEditWizard(Toplevel):
         self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
 
         self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
-                                              background="beige")
-        self.factual_term3_label.grid(row=9, column=0, pady=5)
-        self.factual_term3_text.grid(row=9, column=1, pady=5)
-        self.factual_term3_desc_label.grid(row=10, column=0, pady=5)
-        self.factual_term3_desc_text.grid(row=10, column=1, pady=5)
+                                              background="gray27")
+        self.factual_term3_label.grid(row=9, column=0, pady=5,sticky=tk.W)
+        self.factual_term3_text.grid(row=9, column=1, padx=5,pady=5,sticky=tk.W)
+        self.factual_term3_desc_label.grid(row=10, column=0, pady=5,sticky=tk.W)
+        self.factual_term3_desc_text.grid(row=10, column=1,padx=5, columnspan=2,pady=5,sticky=tk.W)
         text_insert_desc3 = self.lesson_dict[0]["Factual_Term3_Description"]
         self.factual_term3_desc_text.insert("1.0", text_insert_desc3)
         self.factual_text_term3_var.set(self.lesson_dict[0]["Factual_Term3"])
 
-        self.factual_term3_image_button.grid(row=11, column=0, pady=5)
-        self.factual_image_label3.grid(row=11, column=3, pady=5)
+        self.factual_term3_image_button.grid(row=11, column=0, pady=5,sticky=tk.W)
+        self.factual_image_label3.grid(row=11, column=1,padx=5, pady=5,sticky=tk.W)
         self.index = 2
 
     def create_application_edit_page(self, edit_lesson):
@@ -272,10 +270,10 @@ class MagicEditWizard(Toplevel):
         print("sdasdas"+self.selected_steps.get())
         self.apply_steps_dropdown = tk.OptionMenu(self.apply_activity_frame, self.selected_steps, '0', '1', '2', '3', '4', '5', '6', '7', '8',
                                                   command=self.show_individual_steps)
-        self.apply_steps_dropdown.configure(background="beige")
-        self.apply_steps_dropdown["menu"].configure(background="beige")
+        self.apply_steps_dropdown.configure(background="white")
+        self.apply_steps_dropdown["menu"].configure(background="white")
         self.apply_steps_label.grid(row=0, column=0, pady=10,padx=5)
-        self.apply_steps_dropdown.grid(row=0, column=1)
+        self.apply_steps_dropdown.grid(row=0, column=1,pady=5)
 
         self.number_of_steps = self.lesson_dict[0]['Application_Steps_Number']
         self.configure_steps(self.number_of_steps)
@@ -361,7 +359,7 @@ class MagicEditWizard(Toplevel):
             apply_image.thumbnail((60, 60))
             self.apply_image_display_preview1 = ImageTk.PhotoImage(apply_image)
             self.step1_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview1,
-                                         background="beige")
+                                         background="gray27")
         except:
             print("invalid image")
 
@@ -441,71 +439,71 @@ class MagicEditWizard(Toplevel):
             self.step_label = ttk.Label(self.apply_activity_steps_frame, text="Step Description",
                                         style='Edit.TLabelframe.Label')
             if steps == 1:
-                self.step_label.grid(row=steps, column=0, padx=20)
-                self.step_text1.grid(row=steps, column=1, padx=20)
-                self.step_image_button1.grid(row=steps, column=2, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
+                self.step_text1.grid(row=steps, column=1,pady=5, padx=20)
+                self.step_image_button1.grid(row=steps, column=2,pady=5, padx=20)
                 if hasattr(self,"step1_label"):
-                    self.step1_label.grid(row=steps, column=4)
+                    self.step1_label.grid(row=steps,pady=5, column=4)
             if steps == 2:
-                self.step_label.grid(row=steps, column=0, padx=20)
-                self.step_text2.grid(row=steps, column=1, padx=20)
-                self.step_image_button2.grid(row=steps, column=2, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
+                self.step_text2.grid(row=steps, column=1,pady=5, padx=20)
+                self.step_image_button2.grid(row=steps, column=2,pady=5, padx=20)
                 if hasattr(self, "step2_label"):
-                    self.step2_label.grid(row=steps, column=4)
+                    self.step2_label.grid(row=steps, column=4,pady=5)
 
             if steps == 3:
-                self.step_label.grid(row=steps, column=0, padx=20)
-                self.step_text3.grid(row=steps, column=1, padx=20)
-                self.step_image_button3.grid(row=steps, column=2, padx=20)
-                self.step3_label.grid(row=steps, column=4)
+                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
+                self.step_text3.grid(row=steps, column=1,pady=5, padx=20)
+                self.step_image_button3.grid(row=steps, column=2,pady=5, padx=20)
+                self.step3_label.grid(row=steps,pady=5, column=4)
                 if hasattr(self, "step3_label"):
                     self.step3_label.grid(row=steps, column=4)
             if steps == 4:
-                self.step_label.grid(row=steps, column=0, padx=20)
-                self.step_text4.grid(row=steps, column=1, padx=20)
-                self.step_image_button4.grid(row=steps, column=2, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
+                self.step_text4.grid(row=steps, column=1,pady=5, padx=20)
+                self.step_image_button4.grid(row=steps,pady=5, column=2, padx=20)
                 if hasattr(self, "step4_label"):
-                    self.step4_label.grid(row=steps, column=4)
+                    self.step4_label.grid(row=steps,pady=5, column=4)
 
             if steps == 5:
-                self.step_label.grid(row=steps, column=0, padx=20)
-                self.step_text5.grid(row=steps, column=1, padx=20)
-                self.step_image_button5.grid(row=steps, column=2, padx=20)
+                self.step_label.grid(row=steps,pady=5, column=0, padx=20)
+                self.step_text5.grid(row=steps,pady=5, column=1, padx=20)
+                self.step_image_button5.grid(row=steps,pady=5, column=2, padx=20)
                 if hasattr(self, "step5_label"):
-                    self.step5_label.grid(row=steps, column=4)
+                    self.step5_label.grid(row=steps,pady=5, column=4)
 
             if steps == 6:
-                self.step_label.grid(row=steps, column=0, padx=20)
-                self.step_text6.grid(row=steps, column=1, padx=20)
-                self.step_image_button6.grid(row=steps, column=2, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
+                self.step_text6.grid(row=steps, column=1,pady=5, padx=20)
+                self.step_image_button6.grid(row=steps, column=2, pady=5,padx=20)
                 if hasattr(self, "step6_label"):
                     self.step6_label.grid(row=steps, column=4)
             if steps == 7:
-                self.step_label.grid(row=steps, column=0, padx=20)
-                self.step_text7.grid(row=steps, column=1, padx=20)
-                self.step_image_button7.grid(row=steps, column=2, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
+                self.step_text7.grid(row=steps, column=1,pady=5, padx=20)
+                self.step_image_button7.grid(row=steps, column=2,pady=5, padx=20)
                 if hasattr(self, "step7_label"):
-                     self.step7_label.grid(row=steps, column=4)
+                     self.step7_label.grid(row=steps,pady=5, column=4)
             if steps == 8:
-                self.step_label.grid(row=steps, column=0, padx=20)
-                self.step_text8.grid(row=steps, column=1, padx=20)
-                self.step_image_button8.grid(row=steps, column=2, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
+                self.step_text8.grid(row=steps, column=1,pady=5, padx=20)
+                self.step_image_button8.grid(row=steps, column=2,pady=5, padx=20)
                 if hasattr(self, "step8_label"):
-                    self.step8_label.grid(row=steps, column=4)
+                    self.step8_label.grid(row=steps, pady=5,column=4)
             steps += 1
         self.link_label.grid(row=steps, column=0, pady=50)
         self.html_link.grid(row=steps, column=1, pady=50, padx=20)
-        self.apply_activity_steps_frame.grid(row=1,column=0,columnspan=2)
+        self.apply_activity_steps_frame.grid(row=1,column=0,pady=5,columnspan=2)
 
     def create_ip_edit_page(self, edit_lesson):
-        self.create_question_Label = ttk.Label(self.ip_frame, text='Add your questions here', wraplength=300,
+        self.create_question_Label = ttk.Label(self.ip_frame, text='Assessment Questions', wraplength=300,
                                           style='Edit.TLabelframe.Label')
 
         self.create_question_text = tk.Text(self.ip_frame, wrap=tk.WORD, width=70, height=30)
         question_text = self.lesson_dict[0]["IP_Questions"]
         self.create_question_text.insert("1.0", question_text)
         self.create_question_Label.grid(row=1, column=0)
-        self.create_question_text.grid(row=1, column=1)
+        self.create_question_text.grid(row=1, column=1,padx=10)
         self.index += 1
 
 
@@ -519,7 +517,7 @@ class MagicEditWizard(Toplevel):
 
         self.title_image_display_preview = ImageTk.PhotoImage(title_image)
         self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,
-                                                background="beige")
+                                                background="gray27")
         self.title_image_file_label.grid(row=1, column=3, padx=20, pady=10)
 
     def add_factual_image(self,index):
@@ -533,7 +531,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image_label.grid_forget()
             self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
             self.factual_image_label = ttk.Label(self.factual_frame, image=self.factual_image_display_preview,
-                                                    background="beige")
+                                                    background="gray27")
             self.factual_image_label.grid(row=3, column=3, padx=20, pady=5)
 
 
@@ -545,7 +543,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image_label2.grid_forget()
             self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
             self.factual_image_label2 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview2,
-                                                 background="beige")
+                                                 background="gray27")
             self.factual_image_label2.grid(row=7, column=3, padx=20, pady=5)
         else:
             self.factual_image3_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
@@ -555,7 +553,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image_label3.grid_forget()
             self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
             self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
-                                                 background="beige")
+                                                 background="gray27")
             self.factual_image_label3.grid(row=11, column=3, padx=20, pady=5)
 
 
@@ -576,7 +574,7 @@ class MagicEditWizard(Toplevel):
                                              )
                 self.step1_label.grid(row=index, column=4, padx=20, pady=10)
             except:
-                print("invlid image")
+                print("invalid image")
 
         elif index == 2:
             self.application_image2_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
@@ -590,7 +588,7 @@ class MagicEditWizard(Toplevel):
                                              )
                 self.step2_label.grid(row=index, column=4, padx=20, pady=10)
             except:
-                print("invlid image")
+                print("invalid image")
         elif index == 3:
             self.application_image3_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step3_image3.set(application_image_basename)
@@ -603,7 +601,7 @@ class MagicEditWizard(Toplevel):
                                              )
                 self.step3_label.grid(row=index, column=4, padx=20, pady=10)
             except:
-                print("invlid image")
+                print("invalid image")
         elif index == 4:
             self.application_image4_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step4_image4.set(application_image_basename)
@@ -616,7 +614,7 @@ class MagicEditWizard(Toplevel):
                                              )
                 self.step4_label.grid(row=index, column=4, padx=20, pady=10)
             except:
-                print("invlid image")
+                print("invalid image")
         elif index == 5:
             self.application_image5_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step5_image5.set(application_image_basename)
@@ -629,7 +627,7 @@ class MagicEditWizard(Toplevel):
                                              )
                 self.step5_label.grid(row=index, column=4, padx=20, pady=10)
             except:
-                print("invlid image")
+                print("invalid image")
         elif index == 6:
             self.application_image6_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step6_image6.set(application_image_basename)
@@ -642,7 +640,7 @@ class MagicEditWizard(Toplevel):
                                              )
                 self.step6_label.grid(row=index, column=4, padx=20, pady=10)
             except:
-                print("invlid image")
+                print("invalid image")
         elif index == 7:
             self.application_image7_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step7_image7.set(application_image_basename)
@@ -655,7 +653,7 @@ class MagicEditWizard(Toplevel):
                                              )
                 self.step7_label.grid(row=index, column=4, padx=20, pady=10)
             except:
-                print("invlid image")
+                print("invalid image")
         elif index == 8:
             self.application_image8_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step8_image8.set(application_image_basename)
@@ -668,7 +666,7 @@ class MagicEditWizard(Toplevel):
                                              )
                 self.step8_label.grid(row=index, column=4, padx=20, pady=10)
             except:
-                print("invlid image")
+                print("invalid image")
 
     def add_title_video(self):
 
@@ -731,8 +729,7 @@ class MagicEditWizard(Toplevel):
 
         Data_Flow_Edit.save_all_data(self.data_collector, lesson_file_manager,self)
 
-
-
+        self.destroy()
 
     def process_save(self,index):
         if index == 1:
@@ -855,13 +852,13 @@ class MagicEditWizard(Toplevel):
 
 
 
-if __name__== "__main__":
-       pass
+#if __name__== "__main__":
+       #pass
        #  edit_app = tk.Tk()
        #  edit_app.title("Edit Learning Room Wizard")
        #  edit_app.selected_lessons = ""
        #  edit_app.geometry("1000x600")
-       #  edit_app.configure(background='beige')
+       #  edit_app.configure(background='gray27')
        #
        #
        #  frame = MagicEditWizard(edit_app)
