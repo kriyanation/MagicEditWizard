@@ -133,6 +133,7 @@ class MagicEditWizard(Toplevel):
         self.base_frame.grid(row=0,column=0)
 
     def create_title_edit_page(self,edit_lesson):
+        logger.info("Entering create_title_edit_page Initialze")
         self.title_label = ttk.Label(self.title_frame, text="Title of your topic", style='Edit.TLabelframe.Label')
         self.title_text_var = StringVar()
         self.title_text_var.set((self.lesson_dict[0].get("Lesson_Title")))
@@ -177,6 +178,7 @@ class MagicEditWizard(Toplevel):
         self.index += 1
 
     def create_factual_edit_page(self, edit_lesson):
+        logger.info("Entering create_factual_edit_page Initialze")
         self.factual_image_var = StringVar()
         self.factual_text_term1_var = StringVar()
         self.factual_term_label = ttk.Label(self.factual_frame, text="Definition or New Term", style='Edit.TLabelframe.Label')
@@ -263,7 +265,7 @@ class MagicEditWizard(Toplevel):
 
     def create_application_edit_page(self, edit_lesson):
 
-
+        logger.info("Entering create_application_edit_page Initialze")
         self.apply_steps_label = ttk.Label(self.apply_activity_frame, text="Number of Steps?", style='Edit.TLabelframe.Label')
         self.selected_steps = tk.StringVar()
         self.selected_steps.set(str(self.lesson_dict[0]["Application_Steps_Number"]))
@@ -282,7 +284,7 @@ class MagicEditWizard(Toplevel):
 
 
     def show_individual_steps(self,selected_number):
-
+        logger.info("Entering show_individual_steps")
         for widget in self.apply_activity_steps_frame.winfo_children():
              widget.destroy()
         self.configure_steps(int(selected_number))
@@ -291,7 +293,7 @@ class MagicEditWizard(Toplevel):
 
 
     def configure_steps(self,number_of_steps):
-
+        logger.info("Entering configre_steps")
         self.step_text1_var = StringVar()
         self.step_text1_var.set(self.lesson_dict[0]["Application_Step_Description_1"])
         self.step_text2_var = StringVar()
@@ -362,6 +364,7 @@ class MagicEditWizard(Toplevel):
                                          background="gray27")
         except:
             print("invalid image")
+            logger.exception("Invalid Image - step 1")
 
 
         try:
@@ -372,6 +375,7 @@ class MagicEditWizard(Toplevel):
                                          )
         except:
             print("Invalid Image")
+            logger.exception("Invalid Image - step 2")
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step3_image3.get())
             apply_image.thumbnail((60, 60))
@@ -380,6 +384,7 @@ class MagicEditWizard(Toplevel):
 
         except:
             print("invalid image")
+            logger.exception("Invalid Image - step 3")
 
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step4_image4.get())
@@ -389,7 +394,7 @@ class MagicEditWizard(Toplevel):
                                          )
         except:
             print("invalid image")
-
+            logger.exception("Invalid Image - step 4")
 
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step5_image5.get())
@@ -399,6 +404,7 @@ class MagicEditWizard(Toplevel):
                                          )
         except:
             print("invalid image")
+            logger.exception("Invalid Image - step 5")
 
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step6_image6.get())
@@ -408,6 +414,7 @@ class MagicEditWizard(Toplevel):
                                          )
         except:
             print("invalid image")
+            logger.exception("Invalid Image - step 6")
 
         try:
 
@@ -417,7 +424,7 @@ class MagicEditWizard(Toplevel):
             self.step7_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview7,
                                          )
         except:
-            print("invalid image")
+            logger.exception("Invalid Image - step 6")
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step8_image8.get())
             apply_image.thumbnail((60, 60))
@@ -426,6 +433,7 @@ class MagicEditWizard(Toplevel):
                                          )
         except:
             print("invalid image")
+            logger.exception("Invalid Image - step 7")
 
 
         self.htmlvar = StringVar()
@@ -496,6 +504,7 @@ class MagicEditWizard(Toplevel):
         self.apply_activity_steps_frame.grid(row=1,column=0,pady=5,columnspan=2)
 
     def create_ip_edit_page(self, edit_lesson):
+        logger.info("Inside create_ip_edit_page")
         self.create_question_Label = ttk.Label(self.ip_frame, text='Assessment Questions', wraplength=300,
                                           style='Edit.TLabelframe.Label')
 
@@ -508,7 +517,7 @@ class MagicEditWizard(Toplevel):
 
 
     def add_title_image(self):
-
+        logger.info("add_title_image")
         self.title_image_path_full, title_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
         self.image_var.set(title_image_basename)
         title_image = Image.open(self.title_image_path_full)
@@ -521,7 +530,7 @@ class MagicEditWizard(Toplevel):
         self.title_image_file_label.grid(row=1, column=3, padx=20, pady=10)
 
     def add_factual_image(self,index):
-
+        logger.info("Inside add_factual_image")
         factual_image = None
         if index == 1:
             self.factual_image1_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
@@ -575,6 +584,7 @@ class MagicEditWizard(Toplevel):
                 self.step1_label.grid(row=index, column=4, padx=20, pady=10)
             except:
                 print("invalid image")
+                logger.exception("Invalid image - add_application_image - 1")
 
         elif index == 2:
             self.application_image2_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
@@ -589,6 +599,7 @@ class MagicEditWizard(Toplevel):
                 self.step2_label.grid(row=index, column=4, padx=20, pady=10)
             except:
                 print("invalid image")
+                logger.exception("Invalid image - add_application_image - 2")
         elif index == 3:
             self.application_image3_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step3_image3.set(application_image_basename)
@@ -602,6 +613,7 @@ class MagicEditWizard(Toplevel):
                 self.step3_label.grid(row=index, column=4, padx=20, pady=10)
             except:
                 print("invalid image")
+                logger.exception("Invalid image - add_application_image - 3")
         elif index == 4:
             self.application_image4_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step4_image4.set(application_image_basename)
@@ -615,6 +627,7 @@ class MagicEditWizard(Toplevel):
                 self.step4_label.grid(row=index, column=4, padx=20, pady=10)
             except:
                 print("invalid image")
+                logger.exception("Invalid image - add_application_image - 4")
         elif index == 5:
             self.application_image5_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step5_image5.set(application_image_basename)
@@ -628,6 +641,7 @@ class MagicEditWizard(Toplevel):
                 self.step5_label.grid(row=index, column=4, padx=20, pady=10)
             except:
                 print("invalid image")
+                logger.exception("Invalid image - add_application_image - 5")
         elif index == 6:
             self.application_image6_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step6_image6.set(application_image_basename)
@@ -641,6 +655,7 @@ class MagicEditWizard(Toplevel):
                 self.step6_label.grid(row=index, column=4, padx=20, pady=10)
             except:
                 print("invalid image")
+                logger.exception("Invalid image - add_application_image - 6")
         elif index == 7:
             self.application_image7_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step7_image7.set(application_image_basename)
@@ -654,6 +669,7 @@ class MagicEditWizard(Toplevel):
                 self.step7_label.grid(row=index, column=4, padx=20, pady=10)
             except:
                 print("invalid image")
+                logger.exception("Invalid image - add_application_image - 7")
         elif index == 8:
             self.application_image8_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
             self.step8_image8.set(application_image_basename)
@@ -667,6 +683,7 @@ class MagicEditWizard(Toplevel):
                 self.step8_label.grid(row=index, column=4, padx=20, pady=10)
             except:
                 print("invalid image")
+                logger.exception("Invalid image - add_application_image - 8")
 
     def add_title_video(self):
 
@@ -676,7 +693,7 @@ class MagicEditWizard(Toplevel):
 
     def save_data(self):
 
-
+        logger.info("Inside save_data of edit UI")
         if self.data_collector["Title_Image"] == "":
             self.data_collector["Title_Image"] = "LR_Placeholder.jpeg"
             self.title_image_path_full = Data_Flow_Edit.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
@@ -732,6 +749,7 @@ class MagicEditWizard(Toplevel):
         self.destroy()
 
     def process_save(self,index):
+        logger.info("Inside process_Save of edit UI")
         if index == 1:
             self.data_collector["Lesson_Title"]=self.title_text_var.get()
             self.data_collector["Title_Image"]=self.image_var.get()
@@ -797,6 +815,7 @@ class MagicEditWizard(Toplevel):
             self.data_collector['NumberOfQuestions'] = ""
 
     def add_new_lines(self,text_notes,wrap_length):
+        logger.info("Inside add_new_lines of edit screen")
         string_list = []
         for i in range(0,len(text_notes),wrap_length):
             string_list.append(text_notes[i:i+wrap_length])
@@ -805,6 +824,7 @@ class MagicEditWizard(Toplevel):
 
 
     def next_page(self):
+        logger.info("Inside next_page of edit screen")
         if (self.index == 1):
             self.title_frame.grid_forget()
             self.process_save(self.index)
@@ -834,6 +854,7 @@ class MagicEditWizard(Toplevel):
 
 
     def previous_page(self):
+        logger.info("Inside previous_page of edit screen")
         self.next_button.config(text='Next')
         if self.index == 2:
             self.index = 1

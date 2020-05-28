@@ -18,7 +18,7 @@ class LessonFileManager():
             copyfile(filepath,self.image_path+os.path.sep+os.path.basename(filepath))
         except (IOError, OSError):
             print("Image File could not be copied")
-            logger.error(traceback.print_exc())
+            logger.exception("Image file could not copied edit screen")
 
 
     def add_video_file(self,filepath):
@@ -26,5 +26,5 @@ class LessonFileManager():
             copyfile(filepath, self.video_path + os.path.sep + os.path.basename(filepath))
         except (IOError, OSError):
             print("Video File could not be copied")
-            logger.error(traceback.print_exc())
+            logger.exception("Video file could not copied edit screen")
 
