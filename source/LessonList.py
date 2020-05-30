@@ -28,15 +28,15 @@ class MagicLessonList(Toplevel):
                                       font=("helvetica", 12, 'bold'), background="gray27", foreground="white")
         self.scroll_frame = ttk.Frame(self)
         self.choice_list = tk.Listbox(self.scroll_frame, selectmode=tk.SINGLE, background="white",width=40,height=30,
-                                      selectbackground='royalblue4', selectforeground='white',foreground="royalblue4", bd=0, font=("helvetica", 12, 'bold'))
+                                      selectbackground='royalblue4', selectforeground='white',foreground="royalblue4", bd=0, font=("helvetica", 10, 'bold'))
         self.lesson_button = ttk.Button(self, text="Select Lesson",
                                         style='Blue.TButton',command=self.select_lesson)
-
+        self.choice_list.bind('<Double-1>', self.select_lesson)
         self.lesson_list = Data_Flow_Edit.get_Lessons()
         for element in self.lesson_list:
             self.choice_list.insert(tk.END, str(element[0]) + ' : ' + element[1])
         self.choice_label.grid(row=0, column=0)
-        self.scroll_frame.grid(row=1, column=0)
+        self.scroll_frame.grid(row=1, column=0,padx=10,sticky=tk.NSEW)
         self.choice_list.grid(row=0, column=0, sticky=tk.NSEW)
         self.lesson_button.grid(row=2, column=0,pady=5)
         self.scrollbar = ttk.Scrollbar(self.scroll_frame, style='TScrollbar')
@@ -44,7 +44,7 @@ class MagicLessonList(Toplevel):
         self.scrollbar.config(command=self.choice_list.yview)
         self.scrollbar.grid(row=0, column=1, sticky=tk.NSEW)
 
-    def select_lesson(self):
+    def select_lesson(self,event):
         self.parent.selected_lessons = self.lesson_list[self.choice_list.curselection()[0]]
         self.destroy()
 

@@ -15,7 +15,7 @@ class MagicEditWizard(Toplevel):
 
         super().__init__(*args, **kwargs)
         logger.info("Entering Edit Wizard Initialize")
-        self.base_frame = tk.Frame(self, background="gray25")
+        self.base_frame = tk.Frame(self, background="gray20")
 
         #self.base_frame.rowconfigure(0, weight=1)
         self.base_frame.columnconfigure(0, weight=1)
@@ -29,31 +29,31 @@ class MagicEditWizard(Toplevel):
         self.apply_activity_steps_frame = Frame(self.apply_activity_frame)
         self.ip_frame = Frame(self.base_frame)
         #self.rowconfigure(0, weight=1)
-        self.configure(background='gray25')
+        self.configure(background='gray20')
         self.columnconfigure(0, weight=1)
-        self.title_frame.configure(background='gray25')
-        self.factual_frame.configure(background='gray25')
-        self.apply_activity_frame.configure(background='gray25')
-        self.ip_frame.configure(background='gray25')
-        self.apply_activity_steps_frame.configure(background='gray25')
+        self.title_frame.configure(background='gray20')
+        self.factual_frame.configure(background='gray20')
+        self.apply_activity_frame.configure(background='gray20')
+        self.ip_frame.configure(background='gray20')
+        self.apply_activity_steps_frame.configure(background='gray20')
         self.data_collector = {}
         s  = ttk.Style()
         self.bind("<Configure>",self.resize)
         s.theme_use('clam')
 
-        s.configure('Edit.TLabelframe', background='gray27')
+        s.configure('Edit.TLabelframe', background='gray22')
         s.configure('Edit.TLabelframe.Label', font=('helvetica', 14, 'bold'))
-        s.configure('Edit.TLabelframe.Label', background='gray27', foreground='white')
+        s.configure('Edit.TLabelframe.Label', background='gray22', foreground='white')
 
-        s.configure('Firebrick.Label',background='gray27',foreground='white',font=('helvetica', 9, 'bold'))
+        s.configure('Firebrick.Label',background='gray22',foreground='white',font=('helvetica', 9, 'bold'))
 
         s.configure('Firebrick.TButton', background='steel blue', foreground='white',font=('helvetica', 12, 'bold'))
-        s.configure('Green.TMenubutton', background='gray27', foreground='gray55')
+        s.configure('Green.TMenubutton', background='gray22', foreground='gray55')
         s.map('Firebrick.TButton',background=[('active', '!disabled', 'dark turquoise'), ('pressed', 'white')],
               foreground=[('pressed', 'white'), ('active', 'white')])
 
         app = LessonList.MagicLessonList(parent=self)
-        app.geometry("380x680+100+100")
+        app.geometry("350x680+100+100")
         self.wait_window(app)
         print(self.selected_lessons)
         self.to_edit_lesson = self.selected_lessons[0]
@@ -64,7 +64,7 @@ class MagicEditWizard(Toplevel):
         self.lesson_dict = Data_Flow_Edit.select_lesson_data(int(self.to_edit_lesson))
         print(self.lesson_dict)
         self.create_title_edit_page(8)
-        bottom_frame = tk.Frame(self, background="gray25")
+        bottom_frame = tk.Frame(self, background="gray20")
         self.next_button = ttk.Button(bottom_frame, text='Next', command=self.next_page, style='Firebrick.TButton')
         self.back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Firebrick.TButton')
         self.back_button.grid(row=0,column=0,padx=10)
@@ -158,7 +158,7 @@ class MagicEditWizard(Toplevel):
         title_image = Image.open(self.image_title_preview_path)
         title_image.thumbnail((100, 100))
         self.title_image_display_preview = ImageTk.PhotoImage(title_image)
-        self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,background="gray27")
+        self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,background="gray22")
         self.title_url_label = ttk.Label(self.title_frame, text="(OR) youtube URL", style='Edit.TLabelframe.Label')
         self.title_video_url = ttk.Entry(self.title_frame,textvariable = self.video_var )
 
@@ -196,7 +196,7 @@ class MagicEditWizard(Toplevel):
         factual_image.thumbnail((80, 80))
         self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
         self.factual_image_label = ttk.Label(self.factual_frame, image = self.factual_image_display_preview,
-                                            background="gray27")
+                                            background="gray22")
 
 
         self.factual_term_label.grid(row=0, column=0, pady=3,sticky=tk.W)
@@ -223,7 +223,7 @@ class MagicEditWizard(Toplevel):
         factual_image.thumbnail((80, 80))
         self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
         self.factual_image_label2 = ttk.Label(self.factual_frame, image =   self.factual_image_display_preview2  ,
-                                            background="gray27")
+                                            background="gray22")
         self.factual_term2_label.grid(row=5, column=0, pady=5,sticky=tk.W)
         self.factual_term2_text.grid(row=5, column=1, padx=5,pady=5,sticky=tk.W)
         self.factual_term2_desc_label.grid(row=6, column=0, pady=5,sticky=tk.W)
@@ -250,7 +250,7 @@ class MagicEditWizard(Toplevel):
         self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
 
         self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
-                                              background="gray27")
+                                              background="gray22")
         self.factual_term3_label.grid(row=9, column=0, pady=5,sticky=tk.W)
         self.factual_term3_text.grid(row=9, column=1, padx=5,pady=5,sticky=tk.W)
         self.factual_term3_desc_label.grid(row=10, column=0, pady=5,sticky=tk.W)
@@ -361,7 +361,7 @@ class MagicEditWizard(Toplevel):
             apply_image.thumbnail((60, 60))
             self.apply_image_display_preview1 = ImageTk.PhotoImage(apply_image)
             self.step1_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview1,
-                                         background="gray27")
+                                         background="gray22")
         except:
             print("invalid image")
             logger.exception("Invalid Image - step 1")
@@ -526,7 +526,7 @@ class MagicEditWizard(Toplevel):
 
         self.title_image_display_preview = ImageTk.PhotoImage(title_image)
         self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,
-                                                background="gray27")
+                                                background="gray22")
         self.title_image_file_label.grid(row=1, column=3, padx=20, pady=10)
 
     def add_factual_image(self,index):
@@ -540,7 +540,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image_label.grid_forget()
             self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
             self.factual_image_label = ttk.Label(self.factual_frame, image=self.factual_image_display_preview,
-                                                    background="gray27")
+                                                    background="gray22")
             self.factual_image_label.grid(row=3, column=3, padx=20, pady=5)
 
 
@@ -552,7 +552,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image_label2.grid_forget()
             self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
             self.factual_image_label2 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview2,
-                                                 background="gray27")
+                                                 background="gray22")
             self.factual_image_label2.grid(row=7, column=3, padx=20, pady=5)
         else:
             self.factual_image3_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
@@ -562,7 +562,7 @@ class MagicEditWizard(Toplevel):
             self.factual_image_label3.grid_forget()
             self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
             self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
-                                                 background="gray27")
+                                                 background="gray22")
             self.factual_image_label3.grid(row=11, column=3, padx=20, pady=5)
 
 
@@ -879,7 +879,7 @@ class MagicEditWizard(Toplevel):
        #  edit_app.title("Edit Learning Room Wizard")
        #  edit_app.selected_lessons = ""
        #  edit_app.geometry("1000x600")
-       #  edit_app.configure(background='gray27')
+       #  edit_app.configure(background='gray22')
        #
        #
        #  frame = MagicEditWizard(edit_app)
