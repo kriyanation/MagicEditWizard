@@ -49,7 +49,9 @@ class EditUtils():
           wraped_Text = "\n".join(wrap(title_Text, 60, replace_whitespace=False))
           self.title_text_object.textLines(wraped_Text)
           self.notes_file.drawText(self.title_text_object)
-          self.notes_file.drawImage(self.lesson_root+os.path.sep+"images"+os.path.sep+self.lesson_data_dictionary.get("Title_Image"),width=300,height=300,x=150,y = self.title_text_object.getY()-300)
+          image = self.lesson_data_dictionary.get("Title_Image")
+          if (image is not None and image.strip() != ""):
+             self.notes_file.drawImage(self.lesson_root+os.path.sep+"images"+os.path.sep+self.lesson_data_dictionary.get("Title_Image"),width=300,height=300,x=150,y = self.title_text_object.getY()-300)
 
 
           self.notes_file.drawCentredString(300, 800-300-self.title_text_object.getX()-50-150-50,"Video File Used : "+
@@ -77,8 +79,9 @@ class EditUtils():
         wraped_text = "\n".join(wrap(factual_text, 60, replace_whitespace=False))
         factual_text_object.textLines(wraped_text)
         self.notes_file.drawText(factual_text_object)
-
-        self.notes_file.drawImage(self.lesson_root+os.path.sep+"images"+os.path.sep + self.lesson_data_dictionary.get("Factual_Image"+str(i+1)),
+        image = self.lesson_data_dictionary.get("Title_Image")
+        if (image is not None and image.strip() != ""):
+            self.notes_file.drawImage(self.lesson_root+os.path.sep+"images"+os.path.sep + self.lesson_data_dictionary.get("Factual_Image"+str(i+1)),
                                   width=200, height=200,
                                   x=factual_text_object.getX()+150, y=factual_text_object.getY()-100)
         i +=1
