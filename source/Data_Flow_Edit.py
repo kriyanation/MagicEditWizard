@@ -7,7 +7,6 @@ from tkinter import messagebox
 import logging
 
 import Edit_Utils
-import PDF_Utils
 import assessment_generate
 from snapshot_view import SnapshotView
 
@@ -78,7 +77,7 @@ def save_all_data(data_collector,lesson_file_manager,self):
 
     try:
 
-       PDF_Utils.PDFUtils(LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"notes_"+str(LESSON_ID)+".pdf")
+       Edit_Utils.EditUtils(LESSON_ID,lesson_file_manager.lesson_dir+os.path.sep+"notes_"+str(LESSON_ID)+".pdf")
     except:
         messagebox.showerror("Notes Generation","There was an error during notes generation")
         logger.exception("Notes generation met with an error")
@@ -93,7 +92,7 @@ def save_all_data(data_collector,lesson_file_manager,self):
     else:
         messagebox.showinfo("Content Created",
                             "Content created for you to view in the interactive player. \nNotes and Assessments modifield\n"
-                             "This window shall close now",parent=self)
+                            "This window shall close now",parent=self)
         logger.info("Lesson Record Modified")
 
 #get_Title()

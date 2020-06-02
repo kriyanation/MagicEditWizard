@@ -38,7 +38,7 @@ class MagicLessonList(Toplevel):
         self.choice_label.grid(row=0, column=0)
         self.scroll_frame.grid(row=1, column=0,padx=10,sticky=tk.NSEW)
         self.choice_list.grid(row=0, column=0, sticky=tk.NSEW)
-        self.lesson_button.grid(row=2, column=0,pady=5)
+        #self.lesson_button.grid(row=2, column=0,pady=5)
         self.scrollbar = ttk.Scrollbar(self.scroll_frame, style='TScrollbar')
         self.choice_list.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.config(command=self.choice_list.yview)
