@@ -155,9 +155,12 @@ class MagicEditWizard(Toplevel):
         self.image_var = StringVar()
         self.image_var.set(self.lesson_dict[0].get("Title_Image"))
         self.image_title_preview_path = self.imageroot + os.path.sep + self.image_var.get()
-        title_image = Image.open(self.image_title_preview_path)
-        title_image.thumbnail((100, 100))
-        self.title_image_display_preview = ImageTk.PhotoImage(title_image)
+        if self.image_var.get() is not None and self.image_var.get() != "":
+            title_image = Image.open(self.image_title_preview_path)
+            title_image.thumbnail((100, 100))
+            self.title_image_display_preview = ImageTk.PhotoImage(title_image)
+        else:
+            self.title_image_display_preview = None
         self.title_image_file_label = ttk.Label(self.title_frame, image=self.title_image_display_preview,background="gray22")
         self.title_url_label = ttk.Label(self.title_frame, text="(OR) youtube URL", style='Edit.TLabelframe.Label')
         self.title_video_url = ttk.Entry(self.title_frame,textvariable = self.video_var )
@@ -191,10 +194,12 @@ class MagicEditWizard(Toplevel):
         self.factual_term_desc_label = ttk.Label(self.factual_frame, text="Description", style='Edit.TLabelframe.Label')
         self.factual_term_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=1: self.add_factual_image(id), style='Firebrick.TButton')
-
-        factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image_var.get())
-        factual_image.thumbnail((80, 80))
-        self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
+        if self.factual_image_var.get() is not None and self.factual_image_var.get() != "":
+            factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image_var.get())
+            factual_image.thumbnail((80, 80))
+            self.factual_image_display_preview = ImageTk.PhotoImage(factual_image)
+        else:
+            self.factual_image_display_preview = None
         self.factual_image_label = ttk.Label(self.factual_frame, image = self.factual_image_display_preview,
                                             background="gray22")
 
@@ -219,9 +224,12 @@ class MagicEditWizard(Toplevel):
         self.factual_term2_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=2: self.add_factual_image(id), style='Firebrick.TButton')
         self.factual_image2_var.set(self.lesson_dict[0]["Factual_Image2"])
-        factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image2_var.get())
-        factual_image.thumbnail((80, 80))
-        self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
+        if self.factual_image2_var.get() is not None and self.factual_image2_var.get() != "":
+            factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image2_var.get())
+            factual_image.thumbnail((80, 80))
+            self.factual_image_display_preview2 = ImageTk.PhotoImage(factual_image)
+        else:
+            self.factual_image_display_preview2 = None
         self.factual_image_label2 = ttk.Label(self.factual_frame, image =   self.factual_image_display_preview2  ,
                                             background="gray22")
         self.factual_term2_label.grid(row=5, column=0, pady=5,sticky=tk.W)
@@ -245,9 +253,12 @@ class MagicEditWizard(Toplevel):
         self.factual_term3_image_button = ttk.Button(self.factual_frame, text='Add Image',
                                                command=lambda id=3: self.add_factual_image(id), style='Firebrick.TButton')
         self.factual_image3_var.set(self.lesson_dict[0]["Factual_Image3"])
-        factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image3_var.get())
-        factual_image.thumbnail((80, 80))
-        self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
+        if self.factual_image3_var.get() is not None and self.factual_image3_var.get() != "":
+            factual_image = Image.open(self.imageroot + os.path.sep + self.factual_image3_var.get())
+            factual_image.thumbnail((80, 80))
+            self.factual_image_display_preview3 = ImageTk.PhotoImage(factual_image)
+        else:
+            self.factual_image_display_preview3 = None
 
         self.factual_image_label3 = ttk.Label(self.factual_frame, image=self.factual_image_display_preview3,
                                               background="gray22")
@@ -694,24 +705,6 @@ class MagicEditWizard(Toplevel):
     def save_data(self):
 
         logger.info("Inside save_data of edit UI")
-        if self.data_collector["Title_Image"] == "":
-            self.data_collector["Title_Image"] = "LR_Placeholder.jpeg"
-            self.title_image_path_full = Data_Flow_Edit.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
-
-
-        if self.data_collector["Factual_Image1"] == "":
-            self.data_collector["Factual_Image1"] = "LR_Placeholder.jpeg"
-            self.factual_image1_path_full = Data_Flow_Edit.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
-
-
-        if self.data_collector["Factual_Image2"] == "":
-            self.data_collector["Factual_Image2"] = "LR_Placeholder.jpeg"
-            self.factual_image2_path_full = Data_Flow_Edit.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
-
-
-        if self.data_collector["Factual_Image3"] == "":
-            self.data_collector["Factual_Image3"] = "LR_Placeholder.jpeg"
-            self.factual_image3_path_full = Data_Flow_Edit.file_root + os.path.sep + "ph" + os.path.sep + "LR_Placeholder.jpeg"
 
         lesson_file_manager = Lesson_File_Manager.LessonFileManager(Data_Flow_Edit.file_root, self.to_edit_lesson)
 
