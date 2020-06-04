@@ -1,11 +1,11 @@
 import logging
 import os
 import tkinter as tk
-from tkinter import Frame,ttk,messagebox, StringVar, Toplevel
+from tkinter import Frame,ttk,messagebox, StringVar, Toplevel, filedialog
 
 from PIL import Image, ImageTk
 
-import LessonList,Data_Flow_Edit,Edit_Utils
+import LessonList,Data_Flow_Edit
 
 import Lesson_File_Manager
 
@@ -16,7 +16,7 @@ class MagicEditWizard(Toplevel):
         super().__init__(*args, **kwargs)
         logger.info("Entering Edit Wizard Initialize")
         self.base_frame = tk.Frame(self, background="gray20")
-
+        
         #self.base_frame.rowconfigure(0, weight=1)
         self.base_frame.columnconfigure(0, weight=1)
         self.base_frame.grid(row=0, column=0)
@@ -55,76 +55,86 @@ class MagicEditWizard(Toplevel):
         app = LessonList.MagicLessonList(parent=self)
         app.geometry("350x680+100+100")
         self.wait_window(app)
-        print(self.selected_lessons)
-        self.to_edit_lesson = self.selected_lessons[0]
-        Data_Flow_Edit.LESSON_ID = int(self.to_edit_lesson)
-        self.imageroot = Data_Flow_Edit.file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(self.to_edit_lesson) + os.path.sep + "images"
-        self.videoroot = Data_Flow_Edit.file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(self.to_edit_lesson) + os.path.sep + "videos"
+        if hasattr(self,"selected_lessons") is False:
+            self.destroy()
+        else:    
+            
+            self.to_edit_lesson = self.selected_lessons[0]
+           
+            Data_Flow_Edit.LESSON_ID = int(self.to_edit_lesson)
+            self.imageroot = Data_Flow_Edit.file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(self.to_edit_lesson) + os.path.sep + "images"
+            self.videoroot = Data_Flow_Edit.file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(self.to_edit_lesson) + os.path.sep + "videos"
 
-        self.lesson_dict = Data_Flow_Edit.select_lesson_data(int(self.to_edit_lesson))
-        print(self.lesson_dict)
-        self.create_title_edit_page(8)
-        bottom_frame = tk.Frame(self, background="gray20")
-        self.next_button = ttk.Button(bottom_frame, text='Next', command=self.next_page, style='Firebrick.TButton')
-        self.back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Firebrick.TButton')
-        self.back_button.grid(row=0,column=0,padx=10)
-        self.next_button.grid(row=0, column=1)
-        bottom_frame.grid(sticky=tk.S)
-        self.data_collector['Lesson_Type'] = 'Science'
-        self.data_collector['Lesson_Template'] = 'Hogwarts'
-        self.data_collector['Lesson_Title'] = ''
-        self.data_collector['Title_Image'] = ''
-        self.data_collector['Title_Video'] = ''
-        self.data_collector['Title_Running_Notes'] = ''
+            self.lesson_dict = Data_Flow_Edit.select_lesson_data(int(self.to_edit_lesson))
+            print(self.lesson_dict)
+            self.create_title_edit_page(8)
+            bottom_frame = tk.Frame(self, background="gray20")
+            self.next_button = ttk.Button(bottom_frame, text='Next', command=self.next_page, style='Firebrick.TButton')
+            self.back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Firebrick.TButton')
+            self.back_button.grid(row=0,column=0,padx=10)
+            self.next_button.grid(row=0, column=1)
+            bottom_frame.grid(sticky=tk.S)
+            self.data_collector['Lesson_Type'] = 'Science'
+            self.data_collector['Lesson_Template'] = 'Hogwarts'
+            self.data_collector['Lesson_Title'] = ''
+            self.data_collector['Title_Image'] = ''
+            self.data_collector['Title_Video'] = ''
+            self.data_collector['Title_Running_Notes'] = ''
 
-        self.data_collector['Factual_Term1'] = ''
-        self.data_collector['Factual_Term1_Description'] = ''
-        self.data_collector['Factual_Term2'] = ''
-        self.data_collector['Factual_Term2_Description'] = ''
-        self.data_collector['Factual_Term3'] = ''
-        self.data_collector['Factual_Term3_Description'] = ''
-        self.data_collector['Factual_Image1'] = ''
-        self.data_collector['Factual_Image2'] = ''
-        self.data_collector['Factual_Image3'] = ''
-        self.data_collector['Application_Mode'] = ''
-        self.data_collector['Application_Steps_Number'] = 0
-        self.data_collector['Application_Step_Description_1'] = ''
-        self.data_collector['Application_Step_Description_2'] = ''
-        self.data_collector['Application_Step_Description_3'] = ''
-        self.data_collector['Application_Step_Description_4'] = ''
-        self.data_collector['Application_Step_Description_5'] = ''
-        self.data_collector['Application_Step_Description_6'] = ''
-        self.data_collector['Application_Step_Description_7'] = ''
-        self.data_collector['Application_Step_Description_8'] = ''
-        self.data_collector['Application_Steps_Widget_1'] = ''
-        self.data_collector['Application_Steps_Widget_2'] = ''
-        self.data_collector['Application_Steps_Widget_3'] = ''
-        self.data_collector['Application_Steps_Widget_4'] = ''
-        self.data_collector['Application_Steps_Widget_5'] = ''
-        self.data_collector['Application_Steps_Widget_6'] = ''
-        self.data_collector['Application_Steps_Widget_7'] = ''
-        self.data_collector['Application_Steps_Widget_8'] = ''
-        self.data_collector['Answer_Key'] = ''
-        self.data_collector['Video_Audio_Assessment_Flag'] = 0
-        self.data_collector['Application_Video_Link'] = ''
-        self.data_collector['Application_Video_Running_Notes'] = ''
+            self.data_collector['Factual_Term1'] = ''
+            self.data_collector['Factual_Term1_Description'] = ''
+            self.data_collector['Factual_Term2'] = ''
+            self.data_collector['Factual_Term2_Description'] = ''
+            self.data_collector['Factual_Term3'] = ''
+            self.data_collector['Factual_Term3_Description'] = ''
+            self.data_collector['Factual_Image1'] = ''
+            self.data_collector['Factual_Image2'] = ''
+            self.data_collector['Factual_Image3'] = ''
+            self.data_collector['Application_Mode'] = ''
+            self.data_collector['Application_Steps_Number'] = 0
+            self.data_collector['Application_Step_Description_1'] = ''
+            self.data_collector['Application_Step_Description_2'] = ''
+            self.data_collector['Application_Step_Description_3'] = ''
+            self.data_collector['Application_Step_Description_4'] = ''
+            self.data_collector['Application_Step_Description_5'] = ''
+            self.data_collector['Application_Step_Description_6'] = ''
+            self.data_collector['Application_Step_Description_7'] = ''
+            self.data_collector['Application_Step_Description_8'] = ''
+            self.data_collector['Application_Steps_Widget_1'] = ''
+            self.data_collector['Application_Steps_Widget_2'] = ''
+            self.data_collector['Application_Steps_Widget_3'] = ''
+            self.data_collector['Application_Steps_Widget_4'] = ''
+            self.data_collector['Application_Steps_Widget_5'] = ''
+            self.data_collector['Application_Steps_Widget_6'] = ''
+            self.data_collector['Application_Steps_Widget_7'] = ''
+            self.data_collector['Application_Steps_Widget_8'] = ''
+            self.data_collector['Answer_Key'] = ''
+            self.data_collector['Video_Audio_Assessment_Flag'] = 0
+            self.data_collector['Application_Video_Link'] = ''
+            self.data_collector['Application_Video_Running_Notes'] = ''
 
-        self.data_collector["NumberOfQuestions"] = 0
+            self.data_collector["NumberOfQuestions"] = 0
 
-        self.title_image_path_full = ""
-        self.factual_image1_path_full = ""
-        self.factual_image2_path_full =""
-        self.factual_image3_path_full =""
-        self.filename_vid_title_full = ""
-        self.application_image1_path_full =""
-        self.application_image2_path_full =""
-        self.application_image3_path_full =""
-        self.application_image4_path_full =""
-        self.application_image5_path_full =""
-        self.application_image6_path_full =""
-        self.application_image7_path_full =""
-        self.application_image8_path_full =""
+            self.title_image_path_full = ""
+            self.factual_image1_path_full = ""
+            self.factual_image2_path_full =""
+            self.factual_image3_path_full =""
+            self.filename_vid_title_full = ""
+            self.application_image1_path_full =""
+            self.application_image2_path_full =""
+            self.application_image3_path_full =""
+            self.application_image4_path_full =""
+            self.application_image5_path_full =""
+            self.application_image6_path_full =""
+            self.application_image7_path_full =""
+            self.application_image8_path_full =""
 
+
+    def add_file(self,fileroot,window):
+        filename_img_title_full = filedialog.askopenfilename(initialdir=fileroot,title='Select Image',parent=window)
+        filename_img_title = os.path.basename(filename_img_title_full)
+        print(filename_img_title)
+        return filename_img_title_full, filename_img_title
 
 
 
@@ -529,7 +539,7 @@ class MagicEditWizard(Toplevel):
 
     def add_title_image(self):
         logger.info("add_title_image")
-        self.title_image_path_full, title_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+        self.title_image_path_full, title_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
         self.image_var.set(title_image_basename)
         title_image = Image.open(self.title_image_path_full)
         title_image.thumbnail((100, 100))
@@ -544,7 +554,7 @@ class MagicEditWizard(Toplevel):
         logger.info("Inside add_factual_image")
         factual_image = None
         if index == 1:
-            self.factual_image1_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.factual_image1_path_full, factual_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image1_path_full)
             factual_image.thumbnail((80, 80))
@@ -556,7 +566,7 @@ class MagicEditWizard(Toplevel):
 
 
         elif index == 2:
-            self.factual_image2_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.factual_image2_path_full, factual_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image2_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image2_path_full)
             factual_image.thumbnail((80, 80))
@@ -566,7 +576,7 @@ class MagicEditWizard(Toplevel):
                                                  background="gray22")
             self.factual_image_label2.grid(row=7, column=3, padx=20, pady=5)
         else:
-            self.factual_image3_path_full, factual_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.factual_image3_path_full, factual_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.factual_image3_var.set(factual_image_basename)
             factual_image = Image.open(self.factual_image3_path_full)
             factual_image.thumbnail((80, 80))
@@ -583,7 +593,7 @@ class MagicEditWizard(Toplevel):
 
 
         if index == 1:
-            self.application_image1_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.application_image1_path_full, application_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.step1_image1.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image1_path_full)
@@ -598,7 +608,7 @@ class MagicEditWizard(Toplevel):
                 logger.exception("Invalid image - add_application_image - 1")
 
         elif index == 2:
-            self.application_image2_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.application_image2_path_full, application_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.step2_image2.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image2_path_full)
@@ -612,7 +622,7 @@ class MagicEditWizard(Toplevel):
                 print("invalid image")
                 logger.exception("Invalid image - add_application_image - 2")
         elif index == 3:
-            self.application_image3_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.application_image3_path_full, application_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.step3_image3.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image3_path_full)
@@ -626,7 +636,7 @@ class MagicEditWizard(Toplevel):
                 print("invalid image")
                 logger.exception("Invalid image - add_application_image - 3")
         elif index == 4:
-            self.application_image4_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.application_image4_path_full, application_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.step4_image4.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image4_path_full)
@@ -640,7 +650,7 @@ class MagicEditWizard(Toplevel):
                 print("invalid image")
                 logger.exception("Invalid image - add_application_image - 4")
         elif index == 5:
-            self.application_image5_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.application_image5_path_full, application_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.step5_image5.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image5_path_full)
@@ -654,7 +664,7 @@ class MagicEditWizard(Toplevel):
                 print("invalid image")
                 logger.exception("Invalid image - add_application_image - 5")
         elif index == 6:
-            self.application_image6_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.application_image6_path_full, application_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.step6_image6.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image6_path_full)
@@ -668,7 +678,7 @@ class MagicEditWizard(Toplevel):
                 print("invalid image")
                 logger.exception("Invalid image - add_application_image - 6")
         elif index == 7:
-            self.application_image7_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.application_image7_path_full, application_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.step7_image7.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image7_path_full)
@@ -682,7 +692,7 @@ class MagicEditWizard(Toplevel):
                 print("invalid image")
                 logger.exception("Invalid image - add_application_image - 7")
         elif index == 8:
-            self.application_image8_path_full, application_image_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+            self.application_image8_path_full, application_image_basename = self.add_file(Data_Flow_Edit.file_root,self)
             self.step8_image8.set(application_image_basename)
             try:
                 apply_image = Image.open(self.application_image8_path_full)
@@ -698,7 +708,7 @@ class MagicEditWizard(Toplevel):
 
     def add_title_video(self):
 
-        self.filename_vid_title_full, title_video_basename = Edit_Utils.add_file(Data_Flow_Edit.file_root,self)
+        self.filename_vid_title_full, title_video_basename = self.add_file(Data_Flow_Edit.file_root,self)
         self.video_var.set(title_video_basename)
 
 

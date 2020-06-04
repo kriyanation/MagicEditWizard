@@ -8,7 +8,7 @@ import os
 from PIL import Image
 from reportlab.pdfgen import canvas
 
-import data_capture_notes
+import Data_Flow_Edit
 
 logger = logging.getLogger("MagicLogger")
 file_root = os.path.abspath(os.path.join(os.getcwd(), ".."))
@@ -19,8 +19,8 @@ class EditUtils():
         self.lesson_id = lesson_id
         self.file_root = file_root
         self.lesson_text_full =""
-        data_capture_notes.db = db
-        self.lesson_data_dictionary = data_capture_notes.get_Lesson_Dictionary(file_root, self.lesson_id)
+        
+        self.lesson_data_dictionary = Data_Flow_Edit.get_Lesson_Dictionary(file_root, self.lesson_id)
         self.lesson_root = self.file_root + os.path.sep + "Lessons" + os.path.sep + "Lesson" + str(
             self.lesson_data_dictionary.get("Lesson_ID"))
         self.notes_file = canvas.Canvas(filename)
@@ -30,12 +30,6 @@ class EditUtils():
         self.create_application_notes()
         self.create_assessment_notes()
         self.create_canvas_image()
-
-    def add_file(self,fileroot,window):
-        filename_img_title_full = filedialog.askopenfilename(initialdir=fileroot,title='Select Image',parent=window)
-        filename_img_title = os.path.basename(filename_img_title_full)
-        print(filename_img_title)
-        return filename_img_title_full, filename_img_title
 
     def create_title_notes(self):
           self.Title_Font = self.notes_file.setFont("Helvetica", 16)
