@@ -73,7 +73,7 @@ class EditUtils():
         wraped_text = "\n".join(wrap(factual_text, 60, replace_whitespace=False))
         factual_text_object.textLines(wraped_text)
         self.notes_file.drawText(factual_text_object)
-        image = self.lesson_data_dictionary.get("Title_Image")
+        image = self.lesson_data_dictionary.get("Factual_Image"+str(i+1))
         if (image is not None and image.strip() != ""):
             self.notes_file.drawImage(self.lesson_root+os.path.sep+"images"+os.path.sep + self.lesson_data_dictionary.get("Factual_Image"+str(i+1)),
                                   width=200, height=200,
