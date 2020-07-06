@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/MagicEditWizard.iml" filepath="$PROJECT_DIR$/.idea/MagicEditWizard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../MagicPDFSnapshot/.idea/MagicPDFSnapshot.iml" filepath="$PROJECT_DIR$/../MagicPDFSnapshot/.idea/MagicPDFSnapshot.iml" />
     </modules>
   </component>
 </project>
