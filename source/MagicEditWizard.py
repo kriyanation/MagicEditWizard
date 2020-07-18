@@ -73,7 +73,7 @@ class MagicEditWizard(Toplevel):
             self.back_button = ttk.Button(bottom_frame, text="Back", command=self.previous_page, style='Firebrick.TButton')
             self.back_button.grid(row=0,column=0,padx=10)
             self.next_button.grid(row=0, column=1)
-            bottom_frame.grid(sticky=tk.S)
+            bottom_frame.grid(row=1)
             self.data_collector['Lesson_Type'] = 'Science'
             self.data_collector['Lesson_Template'] = 'Hogwarts'
             self.data_collector['Lesson_Title'] = ''
@@ -295,8 +295,8 @@ class MagicEditWizard(Toplevel):
                                                   command=self.show_individual_steps)
         self.apply_steps_dropdown.configure(background="white")
         self.apply_steps_dropdown["menu"].configure(background="white")
-        self.apply_steps_label.grid(row=0, column=0, pady=10,padx=5)
-        self.apply_steps_dropdown.grid(row=0, column=1,pady=5)
+        self.apply_steps_label.grid(row=0, column=0, pady=2,padx=5)
+        self.apply_steps_dropdown.grid(row=0, column=1,pady=2)
 
         self.number_of_steps = self.lesson_dict[0]['Application_Steps_Number']
         self.configure_steps(self.number_of_steps)
@@ -445,7 +445,7 @@ class MagicEditWizard(Toplevel):
             self.step7_label = ttk.Label(self.apply_activity_steps_frame, image=self.apply_image_display_preview7,
                                          )
         except:
-            logger.exception("Invalid Image - step 6")
+            logger.exception("Invalid Image - step 7")
         try:
             apply_image = Image.open(self.imageroot + os.path.sep + self.step8_image8.get())
             apply_image.thumbnail((60, 60))
@@ -454,7 +454,7 @@ class MagicEditWizard(Toplevel):
                                          )
         except:
             print("invalid image")
-            logger.exception("Invalid Image - step 7")
+            logger.exception("Invalid Image - step 8")
 
 
         self.htmlvar = StringVar()
@@ -468,61 +468,61 @@ class MagicEditWizard(Toplevel):
             self.step_label = ttk.Label(self.apply_activity_steps_frame, text="Step Description",
                                         style='Edit.TLabelframe.Label')
             if steps == 1:
-                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
-                self.step_text1.grid(row=steps, column=1,pady=5, padx=20)
-                self.step_image_button1.grid(row=steps, column=2,pady=5, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=2, padx=20)
+                self.step_text1.grid(row=steps, column=1,pady=2, padx=20)
+                self.step_image_button1.grid(row=steps, column=2,pady=2, padx=20)
                 if hasattr(self,"step1_label"):
-                    self.step1_label.grid(row=steps,pady=5, column=4)
+                    self.step1_label.grid(row=steps,pady=2, column=4)
             if steps == 2:
-                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
-                self.step_text2.grid(row=steps, column=1,pady=5, padx=20)
-                self.step_image_button2.grid(row=steps, column=2,pady=5, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=2, padx=20)
+                self.step_text2.grid(row=steps, column=1,pady=2, padx=20)
+                self.step_image_button2.grid(row=steps, column=2,pady=2, padx=20)
                 if hasattr(self, "step2_label"):
-                    self.step2_label.grid(row=steps, column=4,pady=5)
+                    self.step2_label.grid(row=steps, column=4,pady=2)
 
             if steps == 3:
-                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
-                self.step_text3.grid(row=steps, column=1,pady=5, padx=20)
-                self.step_image_button3.grid(row=steps, column=2,pady=5, padx=20)
-                self.step3_label.grid(row=steps,pady=5, column=4)
+                self.step_label.grid(row=steps, column=0,pady=2, padx=20)
+                self.step_text3.grid(row=steps, column=1,pady=2, padx=20)
+                self.step_image_button3.grid(row=steps, column=2,pady=2, padx=20)
+                self.step3_label.grid(row=steps,pady=2, column=4)
                 if hasattr(self, "step3_label"):
                     self.step3_label.grid(row=steps, column=4)
             if steps == 4:
-                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
-                self.step_text4.grid(row=steps, column=1,pady=5, padx=20)
-                self.step_image_button4.grid(row=steps,pady=5, column=2, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=2, padx=20)
+                self.step_text4.grid(row=steps, column=1,pady=2, padx=20)
+                self.step_image_button4.grid(row=steps,pady=2, column=2, padx=20)
                 if hasattr(self, "step4_label"):
-                    self.step4_label.grid(row=steps,pady=5, column=4)
+                    self.step4_label.grid(row=steps,pady=2, column=4)
 
             if steps == 5:
-                self.step_label.grid(row=steps,pady=5, column=0, padx=20)
-                self.step_text5.grid(row=steps,pady=5, column=1, padx=20)
-                self.step_image_button5.grid(row=steps,pady=5, column=2, padx=20)
+                self.step_label.grid(row=steps,pady=2, column=0, padx=20)
+                self.step_text5.grid(row=steps,pady=2, column=1, padx=20)
+                self.step_image_button5.grid(row=steps,pady=2, column=2, padx=20)
                 if hasattr(self, "step5_label"):
-                    self.step5_label.grid(row=steps,pady=5, column=4)
+                    self.step5_label.grid(row=steps,pady=2, column=4)
 
             if steps == 6:
-                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
-                self.step_text6.grid(row=steps, column=1,pady=5, padx=20)
-                self.step_image_button6.grid(row=steps, column=2, pady=5,padx=20)
+                self.step_label.grid(row=steps, column=0,pady=2, padx=20)
+                self.step_text6.grid(row=steps, column=1,pady=2, padx=20)
+                self.step_image_button6.grid(row=steps, column=2, pady=2,padx=20)
                 if hasattr(self, "step6_label"):
                     self.step6_label.grid(row=steps, column=4)
             if steps == 7:
-                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
-                self.step_text7.grid(row=steps, column=1,pady=5, padx=20)
-                self.step_image_button7.grid(row=steps, column=2,pady=5, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=2, padx=20)
+                self.step_text7.grid(row=steps, column=1,pady=2, padx=20)
+                self.step_image_button7.grid(row=steps, column=2,pady=2, padx=20)
                 if hasattr(self, "step7_label"):
-                     self.step7_label.grid(row=steps,pady=5, column=4)
+                     self.step7_label.grid(row=steps,pady=2, column=4)
             if steps == 8:
-                self.step_label.grid(row=steps, column=0,pady=5, padx=20)
-                self.step_text8.grid(row=steps, column=1,pady=5, padx=20)
-                self.step_image_button8.grid(row=steps, column=2,pady=5, padx=20)
+                self.step_label.grid(row=steps, column=0,pady=2, padx=20)
+                self.step_text8.grid(row=steps, column=1,pady=2, padx=20)
+                self.step_image_button8.grid(row=steps, column=2,pady=2, padx=20)
                 if hasattr(self, "step8_label"):
-                    self.step8_label.grid(row=steps, pady=5,column=4)
+                    self.step8_label.grid(row=steps, pady=2,column=4)
             steps += 1
-        self.link_label.grid(row=steps, column=0, pady=50)
-        self.html_link.grid(row=steps, column=1, pady=50, padx=20)
-        self.apply_activity_steps_frame.grid(row=1,column=0,pady=5,columnspan=2)
+        self.link_label.grid(row=steps, column=0, pady=10)
+        self.html_link.grid(row=steps, column=1, pady=10, padx=20)
+        self.apply_activity_steps_frame.grid(row=1,column=0,pady=2,columnspan=2)
 
     def create_ip_edit_page(self, edit_lesson):
         logger.info("Inside create_ip_edit_page")

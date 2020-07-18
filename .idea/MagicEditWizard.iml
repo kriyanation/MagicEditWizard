@@ -11,7 +11,9 @@
     <content url="file://$MODULE_DIR$/../MagicPDFSnapshot">
       <sourceFolder url="file://$MODULE_DIR$/../MagicPDFSnapshot/source" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.8" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="MagicPDFSnapshot" />
+    <orderEntry type="module" module-name="MagicPDFSnapshot" />
   </component>
 </module>
