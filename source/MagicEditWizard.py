@@ -53,7 +53,7 @@ class MagicEditWizard(Toplevel):
               foreground=[('pressed', 'white'), ('active', 'white')])
 
         app = LessonList.MagicLessonList(parent=self)
-        app.geometry("350x680+100+100")
+        app.geometry("350x800+100+100")
         self.wait_window(app)
         if hasattr(self,"selected_lessons") is False:
             self.destroy()
@@ -529,7 +529,7 @@ class MagicEditWizard(Toplevel):
         self.create_question_Label = ttk.Label(self.ip_frame, text='Assessment Questions', wraplength=300,
                                           style='Edit.TLabelframe.Label')
 
-        self.create_question_text = tk.Text(self.ip_frame, wrap=tk.WORD, width=70, height=30)
+        self.create_question_text = tk.Text(self.ip_frame, wrap=tk.WORD, width=70, height=20)
         question_text = self.lesson_dict[0]["IP_Questions"]
         self.create_question_text.insert("1.0", question_text)
         self.create_question_Label.grid(row=1, column=0)
